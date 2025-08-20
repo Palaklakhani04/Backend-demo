@@ -11,3 +11,16 @@ export interface userRegisterType {
     className?: string;
     roleId: number;
 }
+
+export interface roleType {
+    name: string;
+    priority: number;
+}
+
+export interface tokenUser{
+    userId: string;
+    name: string;
+    email: string;
+    roleId: number;
+    createdAt: number;
+}
