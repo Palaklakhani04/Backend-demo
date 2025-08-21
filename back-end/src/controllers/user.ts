@@ -1,100 +1,141 @@
 import type { Request, Response } from "express";
-import { loginSchema, signUpSchema } from "../lib/validation";
+import { loginSchema, signUpSchema, updateUserSchema } from "../lib/validation";
 import { message } from "../lib/responseMessage";
 import { prisma } from "../config/dbConnection";
 import { userRegisterType } from "../lib/types";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import { verifyIfUserExists } from "../lib/verifyExists";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
+dotenv.config();
 
 export const userRegister = async (req: Request, res: Response) => {
+  try {
+    const { error } = signUpSchema.validate(req.body);
+    if (error) throw new Error(message.ERROR.USER.INVALIDE_INPUT);
+
+    const {
+      name,
+      email,
+      password,
+      gender,
+      phone,
+      address,
+      grNumber,
+      department,
+      roleId,
+      className,
+    } = req.body as userRegisterType;
+
+    const hashPsw = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashPsw,
+        gender,
+        image: req.file?.path || "",
+        phone,
+        address,
+        grNumber: grNumber ? grNumber : null,
+        department: department ? department : null,
+        roleId: Number(roleId),
+        class: className ? className : null,
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      user,
+      message: message.USER.REGISTER,
+    });
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json({
+      message: message.ERROR.SERVER,
+      error: error,
+    });
+  }
+};
+
+export const userLogin = async (req: Request, res: Response) => {
+  try {
+    const { error } = loginSchema.validate(req.body);
+    if (error) throw new Error(message.ERROR.USER.INVALIDE_INPUT);
+
+    const { email, password } = req.body;
+
+    const user = await verifyIfUserExists(email);
+    if (!user) throw new Error(message.ERROR.USER.NOT_FOUND);
+
+    const isPasswordValide = await bcrypt.compare(password, user.password);
+    if (!isPasswordValide)
+      throw new Error(message.ERROR.USER.INCORRECT_PASSWORD);
+
+    const payload = {
+      userId: user.id,
+      name: user.name,
+      email: email,
+      roleId: user.roleId,
+    };
+
+    const accessToken = jwt.sign(payload, process.env.AUTH_SECRET || "");
+  
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: message.USER.LOGIN,
+      user: payload,
+      token: accessToken,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: message.ERROR.SERVER,
+      error: error.message,
+    });
+  }
+};
+
+
+export const updateUserDetail = async (req:Request, res:Response) => {
     try {
-        const {error} = signUpSchema.validate(req.body)
+        const { error } = updateUserSchema.validate(req.body)
         if(error) throw new Error(message.ERROR.USER.INVALIDE_INPUT)
 
-        const {name, email, password, gender, phone, address , grNumber, department, roleId , className } = req.body as userRegisterType
+        const {name, email, gender, phone, address , grNumber, department, roleId , className } = req.body as userRegisterType
+        const { userId } = (req as any).user
 
-        const hashPsw = await bcrypt.hash(password, 10)
-
-        const userExists = await verifyIfUserExists(email)
-        if(userExists) throw new Error(message.ERROR.USER.ALREADY_EXISTS)
-
-        if(Number(roleId) === 1 || Number(roleId) === 2 || Number(roleId) === 3){
-            throw new Error(message.ERROR.ROLE.INVALIDE_USER)
-        }
-        
-        const user = await prisma.user.create({
+        const updateUser = await prisma.user.update({
+            where: {
+                id: userId,
+            },
             data: {
                 name,
                 email,
-                password: hashPsw, 
+                image: req.file?.path || "",
                 gender,
-                image: req.file?.path || "" ,
                 phone, 
                 address , 
-                grNumber: grNumber ? grNumber : null, 
-                department: department ? department: null, 
+                grNumber,
+                department,
                 roleId: Number(roleId), 
-                class: className ? className : null
+                class: className  
             }
         })
 
         return res.status(201).json({
             success: true,
-            user,
-            message: message.USER.REGISTER
+            updateUser,
+            message: message.USER.UPDATED
         })
-        
-    } catch (error: any) {
-        return res.status(500).json({
-            message: message.ERROR.SERVER, 
-            error: error.message
-        })
-    }
-}
-
-export const userLogin = async (req:Request, res:Response) => {
-    try {
-        const {error} = loginSchema.validate(req.body)
-        if(error) throw new Error(message.ERROR.USER.INVALIDE_INPUT)
-        
-        const { email, password } = req.body
-        
-        const user = await verifyIfUserExists(email)
-        if(!user) throw new Error(message.ERROR.USER.NOT_FOUND)
-
-        const isPasswordValide = await bcrypt.compare(password, user.password)
-        if(!isPasswordValide) throw new Error(message.ERROR.USER.INCORRECT_PASSWORD)
-        
-        const payload = {
-                userId: user.id,
-                name:user.name,
-                email: email,
-                roleId: user.roleId
-            }
-
-        const accessToken = jwt.sign(
-            payload,
-            process.env.AUTH_SECRET!,
-            { expiresIn: '24h'}
-        )
-
-        res.cookie("accessToken", accessToken, {
-            httpOnly:true,
-            secure:true,
-            maxAge: 24 * 60 * 60 * 1000,
-            sameSite: "none"
-        })
-
-        return res.status(200).json({
-            success: true,
-            message: message.USER.LOGIN,
-            user: payload,
-            token: accessToken
-        })
-        
-    } catch (error: any) {
+    } catch (error:any) {
         return res.status(500).json({
             message: message.ERROR.SERVER, 
             error: error.message

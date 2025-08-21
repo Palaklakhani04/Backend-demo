@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec ts-node src/index.ts"
+    "dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/index.js\""
   },
   "keywords": [],
   "author": "",
@@ -31,6 +31,7 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^24.3.0",
     "ts-node": "^10.9.2",
+    "tsc-watch": "^7.1.1",
     "typescript": "^5.9.2"
   }
 }
