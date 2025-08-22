@@ -51,8 +51,8 @@ model LeaveRequest {
   id Int @id @default(autoincrement())
   user User @relation(name: "userId",fields: [userId], references: [id])
   userId String
-  startDate DateTime
-  endDate DateTime
+  startDate String
+  endDate String
   requestTo User @relation(name: "requestToId", fields: [requestToId], references: [id])
   requestToId String
   leaveType LeaveType

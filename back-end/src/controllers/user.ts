@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import { verifyIfUserExists } from "../lib/verifyExists";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { createUserLeave } from "../lib/common";
 
 dotenv.config();
 
@@ -46,11 +47,14 @@ export const userRegister = async (req: Request, res: Response) => {
       },
     });
 
+    await createUserLeave(user.id)
+
     return res.status(201).json({
       success: true,
       user,
       message: message.USER.REGISTER,
     });
+
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -119,7 +123,6 @@ export const updateUserDetail = async (req:Request, res:Response) => {
             data: {
                 name,
                 email,
-                image: req.file?.path || "",
                 gender,
                 phone, 
                 address , 
@@ -141,4 +144,34 @@ export const updateUserDetail = async (req:Request, res:Response) => {
             error: error.message
         })
     }
+}
+
+export const updateProfileImage = async (req: Request, res: Response) => {
+  try {
+    const { userId } = (req as any).user
+    if(!userId) throw new Error(message.ERROR.USER.NOT_FOUND)
+
+    const newProfile = await prisma.user.update({
+      where:{
+        id: userId
+      },
+      data:{
+        image:`${req.file?.path}`
+      }
+    })
+
+    if(!newProfile) throw new Error(message.ERROR.NOT_FOUND)
+
+    return res.status(201).json({
+      success:true,
+      user: newProfile,
+      message: message.USER.UPDATED
+    })
+
+  } catch (error:any) {
+    return res.status(500).json({
+      message: message.ERROR.SERVER, 
+      error: error.message
+    })
+  }
 }

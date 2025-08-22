@@ -10,9 +10,10 @@ dotenv.config()
 export const authenticateUser = async (req: Request, res:Response, next: NextFunction) => { 
 
     const token = req.cookies["accessToken"]
-    if(!token) return res.json({message:message.ERROR.USER.UNAUTHORIZED})
+    if(!token) return next()
 
     const decodedToken = jwt.verify(token, process.env.AUTH_SECRET as string) as tokenUser  
+
     (req as any).user = decodedToken
     next();
 
@@ -45,6 +46,26 @@ export const verifyOnlyAdmin = async (req:Request, res:Response, next: NextFunct
             })
         }
          
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: message.ERROR.SERVER
+        })
+    }
+}
+
+export const verifyOnlyfacultyOrHod = async (req:Request, res:Response, next: NextFunction) => {
+    try {
+        const { roleId } = (req as any).user
+
+        if(Number(roleId) === 2 || Number(roleId) == 3){
+            return next()
+        }else{
+            return res.json({
+                success: false,
+                message: message.ERROR.USER.UNAUTHORIZED
+            })
+        }
     } catch (error) {
         return res.json({
             success: false,

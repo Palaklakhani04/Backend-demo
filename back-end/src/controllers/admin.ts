@@ -125,7 +125,6 @@ export const deleteUserById = async (req:Request, res:Response) => {
     }
 }
 
-
 export const getAllFacultyDetails = async (req:Request, res:Response) => {
     try {
         const facultyDetail = await prisma.user.findMany({

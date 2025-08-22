@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UniqueUserRegister = exports.verifyOnlyAdmin = exports.verifyUserAuthorization = exports.authenticateUser = void 0;
+exports.UniqueUserRegister = exports.verifyOnlyfacultyOrHod = exports.verifyOnlyAdmin = exports.verifyUserAuthorization = exports.authenticateUser = void 0;
 const responseMessage_1 = require("../lib/responseMessage");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -21,7 +21,7 @@ dotenv_1.default.config();
 const authenticateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.cookies["accessToken"];
     if (!token)
-        return res.json({ message: responseMessage_1.message.ERROR.USER.UNAUTHORIZED });
+        return next();
     const decodedToken = jsonwebtoken_1.default.verify(token, process.env.AUTH_SECRET);
     req.user = decodedToken;
     next();
@@ -61,6 +61,27 @@ const verifyOnlyAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.verifyOnlyAdmin = verifyOnlyAdmin;
+const verifyOnlyfacultyOrHod = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { roleId } = req.user;
+        if (Number(roleId) === 2 || Number(roleId) == 3) {
+            return next();
+        }
+        else {
+            return res.json({
+                success: false,
+                message: responseMessage_1.message.ERROR.USER.UNAUTHORIZED
+            });
+        }
+    }
+    catch (error) {
+        return res.json({
+            success: false,
+            message: responseMessage_1.message.ERROR.SERVER
+        });
+    }
+});
+exports.verifyOnlyfacultyOrHod = verifyOnlyfacultyOrHod;
 const UniqueUserRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { roleId, email } = req.body;

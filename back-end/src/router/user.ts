@@ -7,7 +7,7 @@ const router = Router()
 
 router.post("/signup", upload.single("image"), UniqueUserRegister, userRegister)
 router.post("/signin", userLogin)
-router.put("/update", upload.single("image"), verifyUserAuthorization, updateUserDetail)
+router.put("/update", verifyUserAuthorization, updateUserDetail)
 
 export default router
 

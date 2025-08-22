@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserDetail = exports.userLogin = exports.userRegister = void 0;
+exports.updateProfileImage = exports.updateUserDetail = exports.userLogin = exports.userRegister = void 0;
 const validation_1 = require("../lib/validation");
 const responseMessage_1 = require("../lib/responseMessage");
 const dbConnection_1 = require("../config/dbConnection");
@@ -20,6 +20,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const verifyExists_1 = require("../lib/verifyExists");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const common_1 = require("../lib/common");
 dotenv_1.default.config();
 const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -44,6 +45,7 @@ const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 class: className ? className : null,
             },
         });
+        yield (0, common_1.createUserLeave)(user.id);
         return res.status(201).json({
             success: true,
             user,
@@ -99,7 +101,6 @@ const userLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.userLogin = userLogin;
 const updateUserDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         const { error } = validation_1.updateUserSchema.validate(req.body);
         if (error)
@@ -113,7 +114,6 @@ const updateUserDetail = (req, res) => __awaiter(void 0, void 0, void 0, functio
             data: {
                 name,
                 email,
-                image: ((_a = req.file) === null || _a === void 0 ? void 0 : _a.path) || "",
                 gender,
                 phone,
                 address,
@@ -137,3 +137,33 @@ const updateUserDetail = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.updateUserDetail = updateUserDetail;
+const updateProfileImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const { userId } = req.user;
+        if (!userId)
+            throw new Error(responseMessage_1.message.ERROR.USER.NOT_FOUND);
+        const newProfile = yield dbConnection_1.prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                image: `${(_a = req.file) === null || _a === void 0 ? void 0 : _a.path}`
+            }
+        });
+        if (!newProfile)
+            throw new Error(responseMessage_1.message.ERROR.NOT_FOUND);
+        return res.status(201).json({
+            success: true,
+            user: newProfile,
+            message: responseMessage_1.message.USER.UPDATED
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.updateProfileImage = updateProfileImage;
