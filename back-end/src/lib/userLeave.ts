@@ -16,12 +16,20 @@ export const createUserLeave = async (id: string) => {
     })
 }
 
-export const updateUserLeaveData = async (attendancePercentage: number, usedLeave: number, availableLeave: number, leaveDay:number) =>{
+export const updateUserLeaveData = async (availableLeave: number, usedLeave: number,  leaveDay:number, id:number, totalWorkingDays:number ) =>{
     const usedLeaveData = usedLeave + leaveDay
     const availableLeaveData = availableLeave - leaveDay
-    const attendancePercentageData = (availableLeave/12) * 100
+    const attendancePercentageData = (((totalWorkingDays-usedLeaveData)/totalWorkingDays) * 100).toFixed(2)
+    
+    const userLeave = await prisma.userLeave.update({
+        where:{
+            id: id
+        },
+        data:{
+            attendancePercentage: attendancePercentageData,
+            availableLeave: availableLeaveData,
+            usedLeave: usedLeaveData
+        }
+    })
 
-    // const userLeave = await prisma.userLeave.update({
-        
-    // })
 }

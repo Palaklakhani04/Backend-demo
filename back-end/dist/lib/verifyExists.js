@@ -23,9 +23,6 @@ const verifyIfRequestIdExists = (requestToId) => __awaiter(void 0, void 0, void 
     return yield dbConnection_1.prisma.user.findUnique({
         where: {
             id: requestToId,
-            roleId: {
-                not: 4
-            }
         },
         select: {
             id: true,
@@ -34,21 +31,16 @@ const verifyIfRequestIdExists = (requestToId) => __awaiter(void 0, void 0, void 
     });
 });
 exports.verifyIfRequestIdExists = verifyIfRequestIdExists;
-const Days = (userId, startDate, endDate) => __awaiter(void 0, void 0, void 0, function* () {
+const Days = (startDate, endDate) => __awaiter(void 0, void 0, void 0, function* () {
     const startTime = new Date(startDate);
     const endTime = new Date(endDate);
     const totalTime = endTime.getTime() - startTime.getTime();
-    const totalHoursOfLeave = totalTime / (1000 * 60 * 60);
     const totalDaysOfLeave = totalTime / (1000 * 60 * 60 * 24);
-    return totalDaysOfLeave;
+    return Math.abs(totalDaysOfLeave);
 });
 exports.Days = Days;
-const verifyAvailableDays = (userId, startDate, endDate) => __awaiter(void 0, void 0, void 0, function* () {
-    const startTime = new Date(startDate);
-    const endTime = new Date(endDate);
-    const totalTime = endTime.getTime() - startTime.getTime();
-    const totalHoursOfLeave = totalTime / (1000 * 60 * 60);
-    const totalDaysOfLeave = totalTime / (1000 * 60 * 60 * 24);
+const verifyAvailableDays = (startDate, endDate, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const totalDaysOfLeave = yield (0, exports.Days)(startDate, endDate);
     const user = yield dbConnection_1.prisma.userLeave.findFirst({
         where: {
             userId: userId

@@ -20,7 +20,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const verifyExists_1 = require("../lib/verifyExists");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const common_1 = require("../lib/common");
+const userLeave_1 = require("../lib/userLeave");
 dotenv_1.default.config();
 const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -45,7 +45,7 @@ const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 class: className ? className : null,
             },
         });
-        yield (0, common_1.createUserLeave)(user.id);
+        yield (0, userLeave_1.createUserLeave)(user.id);
         return res.status(201).json({
             success: true,
             user,

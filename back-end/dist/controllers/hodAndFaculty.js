@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.approveLeaveStatus = exports.getLeaveStatus = void 0;
+exports.getFacultyLeave = exports.updateLeaveStatus = exports.getLeaveStatus = void 0;
 const responseMessage_1 = require("../lib/responseMessage");
 const dbConnection_1 = require("../config/dbConnection");
 const verifyExists_1 = require("../lib/verifyExists");
-const common_1 = require("../lib/common");
+const userLeave_1 = require("../lib/userLeave");
 const getLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.user;
@@ -40,7 +40,6 @@ const getLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
     catch (error) {
-        console.log(error);
         return res.status(500).json({
             message: responseMessage_1.message.ERROR.SERVER,
             error: error.message
@@ -48,11 +47,10 @@ const getLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getLeaveStatus = getLeaveStatus;
-const approveLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
         const { status } = req.body;
-        const { userId } = req.user;
         const leaveData = yield dbConnection_1.prisma.leaveRequest.findFirst({
             where: {
                 id: Number(id),
@@ -64,26 +62,50 @@ const approveLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
         const userData = yield dbConnection_1.prisma.userLeave.findFirst({
             where: {
-                userId: leaveData === null || leaveData === void 0 ? void 0 : leaveData.userId
+                userId: leaveData === null || leaveData === void 0 ? void 0 : leaveData.user.id
             }
         });
-        const leaveDay = yield (0, verifyExists_1.Days)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.userId);
-        const isLeave = yield (0, verifyExists_1.verifyAvailableDays)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.userId);
+        const leaveDay = yield (0, verifyExists_1.Days)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate);
+        const isLeave = yield (0, verifyExists_1.verifyAvailableDays)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate, userData === null || userData === void 0 ? void 0 : userData.userId);
         if (!isLeave)
             throw new Error(responseMessage_1.message.ERROR.LEAVE.USED);
-        const isApproved = yield dbConnection_1.prisma.leaveRequest.update({
-            where: {
-                id: Number(id)
-            },
-            data: {
-                status
-            }
-        });
-        if (!isApproved)
-            return res.status(400).json({
-                message: responseMessage_1.message.ERROR.UPDATED
+        if (status === "Approved") {
+            const isApproved = yield dbConnection_1.prisma.leaveRequest.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    status
+                }
             });
-        const updateUserLeave = yield (0, common_1.updateUserLeaveData)(userData === null || userData === void 0 ? void 0 : userData.attendancePercentage, userData === null || userData === void 0 ? void 0 : userData.availableLeave, userData === null || userData === void 0 ? void 0 : userData.usedLeave, leaveDay);
+            console.log(isApproved);
+            if (isApproved) {
+                yield (0, userLeave_1.updateUserLeaveData)(userData === null || userData === void 0 ? void 0 : userData.availableLeave, userData === null || userData === void 0 ? void 0 : userData.usedLeave, leaveDay, userData === null || userData === void 0 ? void 0 : userData.id, userData === null || userData === void 0 ? void 0 : userData.totalWorkingDays);
+            }
+            else {
+                throw new Error(responseMessage_1.message.ERROR.UPDATED);
+            }
+        }
+        else if (status === "Rejected") {
+            const isRejected = yield dbConnection_1.prisma.leaveRequest.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    status
+                }
+            });
+            console.log(isRejected);
+            if (!isRejected)
+                throw new Error(responseMessage_1.message.ERROR.UPDATED);
+        }
+        else {
+            throw new Error(responseMessage_1.message.ERROR.UPDATED);
+        }
+        return res.json({
+            success: true,
+            message: responseMessage_1.message.LEAVE.UPDATED
+        });
     }
     catch (error) {
         console.log(error);
@@ -93,4 +115,28 @@ const approveLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
 });
-exports.approveLeaveStatus = approveLeaveStatus;
+exports.updateLeaveStatus = updateLeaveStatus;
+const getFacultyLeave = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.user;
+        const facultyLeaves = yield dbConnection_1.prisma.leaveRequest.findMany({
+            where: {
+                userId: userId
+            }
+        });
+        if (!facultyLeaves)
+            throw new Error(responseMessage_1.message.ERROR.NOT_FOUND);
+        return res.status(200).json({
+            success: true,
+            data: facultyLeaves,
+            message: responseMessage_1.message.FETCHED
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.getFacultyLeave = getFacultyLeave;

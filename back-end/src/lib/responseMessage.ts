@@ -14,6 +14,7 @@ export const message = {
     },
     LEAVE: {
         CREATED: "Leave Request Successfully Created.",
+        UPDATED: "Leave Status Updated Successfully.",
     },
     ERROR: {
         USER:{

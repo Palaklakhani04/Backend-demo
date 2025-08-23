@@ -49,7 +49,8 @@ const applyLeaveRequest = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const isExists = yield (0, verifyExists_1.verifyIfRequestIdExists)(requestToId);
         if (!isExists)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_USER);
-        const isLeave = yield (0, verifyExists_1.verifyAvailableDays)(userId, startDate, endDate);
+        // verify if user has leave or not for leaveRequest
+        const isLeave = yield (0, verifyExists_1.verifyAvailableDays)(startDate, endDate, userId);
         if (!isLeave)
             throw new Error(responseMessage_1.message.ERROR.LEAVE.USED);
         const leaveRequest = yield dbConnection_1.prisma.leaveRequest.create({

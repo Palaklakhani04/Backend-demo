@@ -26,10 +26,10 @@ const createUserLeave = (id) => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 exports.createUserLeave = createUserLeave;
-const updateUserLeaveData = (availableLeave, usedLeave, leaveDay, id, totalLeave) => __awaiter(void 0, void 0, void 0, function* () {
+const updateUserLeaveData = (availableLeave, usedLeave, leaveDay, id, totalWorkingDays) => __awaiter(void 0, void 0, void 0, function* () {
     const usedLeaveData = usedLeave + leaveDay;
     const availableLeaveData = availableLeave - leaveDay;
-    const attendancePercentageData = (availableLeave / 12) * 100;
+    const attendancePercentageData = (((totalWorkingDays - usedLeaveData) / totalWorkingDays) * 100).toFixed(2);
     const userLeave = yield dbConnection_1.prisma.userLeave.update({
         where: {
             id: id
@@ -40,6 +40,5 @@ const updateUserLeaveData = (availableLeave, usedLeave, leaveDay, id, totalLeave
             usedLeave: usedLeaveData
         }
     });
-    console.log(userLeave);
 });
 exports.updateUserLeaveData = updateUserLeaveData;

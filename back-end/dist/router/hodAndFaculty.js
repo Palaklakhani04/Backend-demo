@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const hodAndFaculty_1 = require("../controllers/hodAndFaculty");
+const student_1 = require("../controllers/student");
 const router = (0, express_1.Router)();
 router.get("/leavestatus", hodAndFaculty_1.getLeaveStatus);
+router.put("/updateleavestatus/:id", hodAndFaculty_1.updateLeaveStatus);
+router.post("/applyLeave", student_1.applyLeaveRequest);
+router.get("/facultyLeave", hodAndFaculty_1.getFacultyLeave);
 exports.default = router;

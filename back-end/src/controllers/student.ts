@@ -43,7 +43,8 @@ export const applyLeaveRequest = async (req: Request, res: Response) => {
         const isExists = await verifyIfRequestIdExists(requestToId)
         if(!isExists) throw new Error(message.ERROR.USER.INVALIDE_USER)
 
-        const isLeave = await verifyAvailableDays( userId ,startDate, endDate)
+        // verify if user has leave or not for leaveRequest
+        const isLeave = await verifyAvailableDays(startDate, endDate,  userId)
         if(!isLeave) throw new Error(message.ERROR.LEAVE.USED)
 
         const leaveRequest = await prisma.leaveRequest.create({

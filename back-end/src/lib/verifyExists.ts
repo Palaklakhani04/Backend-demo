@@ -12,9 +12,6 @@ export const verifyIfRequestIdExists = async (requestToId:string) => {
     return await prisma.user.findUnique({
         where:{
             id: requestToId,
-            roleId :{
-                not : 4
-            }
         },
         select:{
             id: true,
@@ -23,25 +20,19 @@ export const verifyIfRequestIdExists = async (requestToId:string) => {
     })
 }
 
-export const Days = async (userId: string, startDate:string, endDate: string) => {
+export const Days = async (startDate:string, endDate: string) => {
     const startTime = new Date(startDate)
     const endTime = new Date(endDate)
 
     const totalTime = endTime.getTime() - startTime.getTime()
-    const totalHoursOfLeave = totalTime / (1000 * 60 * 60);
     const totalDaysOfLeave = totalTime / (1000 * 60 * 60 * 24)
-    return totalDaysOfLeave
+
+    return Math.abs(totalDaysOfLeave)
     
 }
 
-export const verifyAvailableDays = async (userId: string, startDate:string, endDate: string) => {
-    const startTime = new Date(startDate)
-    const endTime = new Date(endDate)
-
-    const totalTime = endTime.getTime() - startTime.getTime()
-    const totalHoursOfLeave = totalTime / (1000 * 60 * 60);
-    const totalDaysOfLeave = totalTime / (1000 * 60 * 60 * 24)
-   
+export const verifyAvailableDays = async (startDate:string, endDate: string, userId: string, ) => {
+    const totalDaysOfLeave = await Days(startDate, endDate)
     const user = await prisma.userLeave.findFirst({
         where: {
             userId: userId

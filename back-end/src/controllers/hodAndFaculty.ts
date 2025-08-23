@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { message } from "../lib/responseMessage";
 import { prisma } from "../config/dbConnection";
-import { Days, verifyAvailableDays } from "../lib/verifyExists";
-import { updateUserLeaveData } from "../lib/common";
+import { Days, verifyAvailableDays, verifyIfRequestIdExists } from "../lib/verifyExists";
+import { updateUserLeaveData } from "../lib/userLeave";
+import { leaveRequestSchema } from "../lib/validation";
 
 export const getLeaveStatus = async (req:Request, res:Response) => {
     try {
@@ -32,7 +33,6 @@ export const getLeaveStatus = async (req:Request, res:Response) => {
         })
 
     } catch (error:any) {
-        console.log(error)
         return res.status(500).json({
             message: message.ERROR.SERVER, 
             error: error.message
@@ -41,12 +41,11 @@ export const getLeaveStatus = async (req:Request, res:Response) => {
 }
 
 
-export const approveLeaveStatus = async (req:Request, res:Response) => {
+export const updateLeaveStatus = async (req:Request, res:Response) => {
     try {
         const { id } = req.params
         const { status } = req.body
-        const { userId } = (req as any).user
-
+    
         const leaveData = await prisma.leaveRequest.findFirst({
             where:{
                 id: Number(id),
@@ -59,34 +58,82 @@ export const approveLeaveStatus = async (req:Request, res:Response) => {
 
         const userData = await prisma.userLeave.findFirst({
             where: {
-                userId: leaveData?.userId
+                userId: leaveData?.user.id
             }
         })
 
-        const leaveDay = await Days(leaveData?.startDate as string, leaveData?.endDate as string, leaveData?.userId as string)
+        const leaveDay = await Days(leaveData?.startDate as string, leaveData?.endDate as string)
 
-        const isLeave = await verifyAvailableDays(leaveData?.startDate as string, leaveData?.endDate as string, leaveData?.userId as string)
-
+        const isLeave = await verifyAvailableDays(leaveData?.startDate as string, leaveData?.endDate as string, userData?.userId as string)
         if(!isLeave) throw new Error(message.ERROR.LEAVE.USED)
-        
-        const isApproved = await prisma.leaveRequest.update({
-            where:{
-                id: Number(id)
-            },
-            data: {
-                status
+
+        if(status === "Approved"){
+            const isApproved = await prisma.leaveRequest.update({
+                where:{
+                    id: Number(id)
+                },
+                data: {
+                    status
+                }
+            })
+
+            console.log(isApproved)
+            if(isApproved) {
+                await updateUserLeaveData( userData?.availableLeave as number, userData?.usedLeave as number ,leaveDay as number, userData?.id as number, userData?.totalWorkingDays as number)
+            }else{
+                throw new Error(message.ERROR.UPDATED)
             }
-        })
 
-        if(!isApproved) return res.status(400).json({
-            message:message.ERROR.UPDATED
-        })
+        }else if(status === "Rejected") {
+            const isRejected = await prisma.leaveRequest.update({
+                where:{
+                    id: Number(id)
+                },
+                data: {
+                    status
+                }
+            })
 
-        const updateUserLeave = await updateUserLeaveData(userData?.attendancePercentage as number, userData?.availableLeave as number, userData?.usedLeave as number ,leaveDay as number)
+            console.log(isRejected)
+            if(!isRejected) throw new Error(message.ERROR.UPDATED)
+
+        }else{
+            throw new Error(message.ERROR.UPDATED)
+        }
         
+        return res.json({
+            success: true,
+            message: message.LEAVE.UPDATED
+        })
 
     } catch (error:any) {
         console.log(error)
+        return res.status(500).json({
+            message: message.ERROR.SERVER, 
+            error: error.message
+        })
+    }
+}
+
+export const getFacultyLeave = async (req:Request, res:Response) => {
+    try {
+        const { userId } = (req as any).user
+
+        const facultyLeaves = await prisma.leaveRequest.findMany({
+            where:{
+                userId: userId
+            }
+        })
+
+        if(!facultyLeaves) throw new Error(message.ERROR.NOT_FOUND)
+
+        return res.status(200).json({
+            success:true,
+            data:facultyLeaves,
+            message:message.FETCHED
+        })
+        
+    } catch (error:any) {
         return res.status(500).json({
             message: message.ERROR.SERVER, 
             error: error.message

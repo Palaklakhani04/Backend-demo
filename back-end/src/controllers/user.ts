@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import { verifyIfUserExists } from "../lib/verifyExists";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { createUserLeave } from "../lib/common";
+import { createUserLeave } from "../lib/userLeave";
 
 dotenv.config();
 
