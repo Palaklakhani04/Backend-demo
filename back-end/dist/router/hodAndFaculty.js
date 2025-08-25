@@ -8,4 +8,5 @@ router.get("/leavestatus", hodAndFaculty_1.getLeaveStatus);
 router.put("/updateleavestatus/:id", hodAndFaculty_1.updateLeaveStatus);
 router.post("/applyLeave", student_1.applyLeaveRequest);
 router.get("/facultyLeave", hodAndFaculty_1.getFacultyLeave);
+router.get("/leavebalance", hodAndFaculty_1.getFacultyLeaveBalance);
 exports.default = router;

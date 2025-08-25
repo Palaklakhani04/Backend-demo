@@ -16,4 +16,7 @@ router.post("/createUser", upload_1.upload.single("image"), user_1.userRegister)
 router.get("/hod", admin_1.getAllHodDetails);
 // manage faculty
 router.get("/faculty", admin_1.getAllFacultyDetails);
+// leave
+router.get("/leavereport", admin_1.getLeaveReport);
+router.get("/leavereportdata", admin_1.getLeaveReportData);
 exports.default = router;

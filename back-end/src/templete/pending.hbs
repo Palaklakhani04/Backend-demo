@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pending Leave Reminder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    .leave-box {
+      background-color: #fff;
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .leave-box h2 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .leave-box p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .reminder {
+      margin-top: 15px;
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border: 1px solid #ffeeba;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="leave-box">
+    <h2>Leave Request</h2> 
+    <h2>name = {{name}}</h2>
+
+    <div class="reminder">
+      ⏰ Reminder: Your leave request has been pending for over 1 day.
+    </div>
+  </div>
+
+</body>
+</html>

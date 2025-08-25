@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFacultyLeave = exports.updateLeaveStatus = exports.getLeaveStatus = void 0;
+exports.getFacultyLeaveBalance = exports.getFacultyLeave = exports.updateLeaveStatus = exports.getLeaveStatus = void 0;
 const responseMessage_1 = require("../lib/responseMessage");
 const dbConnection_1 = require("../config/dbConnection");
 const verifyExists_1 = require("../lib/verifyExists");
@@ -140,3 +140,37 @@ const getFacultyLeave = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getFacultyLeave = getFacultyLeave;
+const getFacultyLeaveBalance = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.user;
+        const leaveStatus = yield dbConnection_1.prisma.leaveRequest.findMany({
+            where: {
+                userId: userId,
+            }
+        });
+        const userLeaveData = yield dbConnection_1.prisma.userLeave.findFirst({
+            where: {
+                userId: userId
+            }
+        });
+        const rejectedLeave = leaveStatus.filter((value) => value.status === "Rejected");
+        const leaveBalance = {
+            AvailableLeave: userLeaveData === null || userLeaveData === void 0 ? void 0 : userLeaveData.availableLeave,
+            AttendancePercentage: userLeaveData === null || userLeaveData === void 0 ? void 0 : userLeaveData.attendancePercentage,
+            ApprovedLeave: userLeaveData === null || userLeaveData === void 0 ? void 0 : userLeaveData.usedLeave,
+            RejectedLeave: rejectedLeave.length
+        };
+        return res.status(200).json({
+            success: true,
+            data: leaveBalance,
+            message: responseMessage_1.message.FETCHED
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.getFacultyLeaveBalance = getFacultyLeaveBalance;

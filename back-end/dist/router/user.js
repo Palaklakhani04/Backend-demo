@@ -8,4 +8,5 @@ const router = (0, express_1.Router)();
 router.post("/signup", upload_1.upload.single("image"), auth_1.UniqueUserRegister, user_1.userRegister);
 router.post("/signin", user_1.userLogin);
 router.put("/update", auth_1.verifyUserAuthorization, user_1.updateUserDetail);
+router.post("/logout", user_1.logout);
 exports.default = router;

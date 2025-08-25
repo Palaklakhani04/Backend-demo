@@ -33,3 +33,45 @@ export const updateUserLeaveData = async (availableLeave: number, usedLeave: num
     })
 
 }
+
+// export const getUserLeaveData = async () => {
+
+//         const student = await prisma.user.findMany({
+//            where: {
+//              roleId: 4
+//            },
+//            include: {
+//              leaveRequest:true
+//            }
+//         })
+
+//         const faculty = await prisma.user.findMany({
+//             where: {
+//                 roleId: 3
+//             },
+//             include: {
+//              leaveRequest:true
+//            }
+//         })
+
+//         const hod = await prisma.user.findMany({
+//             include:{
+//                 leaveRequest: {
+//                     select: {
+//                         userId : true
+//                     }
+//                 }
+//             }
+//         })
+        
+
+//         console.log(hod)
+//         const leaveDataOfUser = {
+//             HodLeaveCount: hod.length ,
+//             FacultyLeaveCount: faculty.length,
+//             StudentLeaveCount: student.length
+//         }
+
+//         return leaveDataOfUser
+        
+// }

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProfileImage = exports.updateUserDetail = exports.userLogin = exports.userRegister = void 0;
+exports.logout = exports.updateProfileImage = exports.updateUserDetail = exports.userLogin = exports.userRegister = void 0;
 const validation_1 = require("../lib/validation");
 const responseMessage_1 = require("../lib/responseMessage");
 const dbConnection_1 = require("../config/dbConnection");
@@ -167,3 +167,15 @@ const updateProfileImage = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.updateProfileImage = updateProfileImage;
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.cookie("accessToken", "", {
+        expires: new Date(0),
+        httpOnly: true,
+        sameSite: "none"
+    });
+    res.status(200).json({
+        success: true,
+        message: responseMessage_1.message.USER.LOGOUT
+    });
+});
+exports.logout = logout;

@@ -140,3 +140,44 @@ export const getFacultyLeave = async (req:Request, res:Response) => {
         })
     }
 }
+
+
+export const getFacultyLeaveBalance = async (req:Request, res:Response) => {
+    try {
+        const { userId } = (req as any).user
+
+        const leaveStatus = await prisma.leaveRequest.findMany({
+            where: {
+                userId: userId,
+            }
+            
+        })
+
+        const userLeaveData = await prisma.userLeave.findFirst({
+            where: {
+                userId: userId
+            }
+        })
+
+        const rejectedLeave = leaveStatus.filter((value) => value.status === "Rejected")
+
+        const leaveBalance = {
+            AvailableLeave: userLeaveData?.availableLeave,
+            AttendancePercentage: userLeaveData?.attendancePercentage,
+            ApprovedLeave: userLeaveData?.usedLeave,
+            RejectedLeave: rejectedLeave.length
+        }
+
+        return res.status(200).json({
+            success:true,
+            data:leaveBalance,
+            message:message.FETCHED
+        })
+        
+    } catch (error:any) {
+        return res.status(500).json({
+            message: message.ERROR.SERVER, 
+            error: error.message
+        })
+    }
+}

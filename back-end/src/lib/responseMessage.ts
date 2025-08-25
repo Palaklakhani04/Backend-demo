@@ -5,7 +5,8 @@ export const message = {
         REGISTER: "Successfully Register.",
         LOGIN: "Successfully Login.",
         UPDATED: "User Successfully Updated.",
-        DELETE: "User Successfully Deleted."
+        DELETE: "User Successfully Deleted.",
+        LOGOUT: "Successfully Logout.",
     },
     FETCHED: "Data Retrived Successfully.",
     ROLE: {

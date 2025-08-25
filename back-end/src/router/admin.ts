@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllFacultyDetails, getAllHodDetails, getAllStudents, getUserById, updateUserDetailById, deleteUserById } from "../controllers/admin";
+import { getAllFacultyDetails, getAllHodDetails, getAllStudents, getUserById, updateUserDetailById, deleteUserById, getLeaveReport, getLeaveReportData } from "../controllers/admin";
 import { userRegister } from "../controllers/user";
 import { upload } from "../lib/upload";
 
@@ -20,6 +20,8 @@ router.get("/hod", getAllHodDetails)
 // manage faculty
 router.get("/faculty", getAllFacultyDetails)
 
-
+// leave
+router.get("/leavereport", getLeaveReport)
+router.get("/leavereportdata", getLeaveReportData)
 
 export default router

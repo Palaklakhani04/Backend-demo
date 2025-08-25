@@ -179,4 +179,173 @@ export const getAllHodDetails = async (req:Request, res:Response) => {
     }
 }
 
+export const getLeaveReport = async (req: Request, res:Response) => {
+    try {
+        const leaveCount = await prisma.leaveRequest.count({})
 
+        const approvedLeave = await prisma.leaveRequest.count({
+            where: {
+                status: "Approved"
+            }
+        }) 
+
+        const pendingLeave = await prisma.leaveRequest.count({
+            where: {
+                status: "Pending"
+            }
+        }) 
+
+        const totalUser = await prisma.leaveRequest.findMany({
+            distinct: ['userId']
+        })
+
+
+        const leaveReport = {
+            AllUser : totalUser.length,
+            PendingLeave : pendingLeave,
+            ApprovedLeave: approvedLeave,
+            TotalLeaveCount: leaveCount
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: leaveReport,
+            message: message.FETCHED
+        })
+
+    } catch (error:any) {
+        return res.status(500).json({
+            message: message.ERROR.SERVER, 
+            error: error.message
+        })
+    }
+}
+
+export const getLeaveReportData = async (req: Request, res:Response) => {
+    try {
+        const studentLeaveCount = await prisma.leaveRequest.groupBy({
+            by: ['userId'],
+            _count:{
+                id:true
+            },
+            where:{
+                user:{
+                    roleId: 4
+                }
+            },
+            orderBy:{
+                _count:{
+                    id: "desc"
+                }
+            },
+            
+        })
+        const studentData = await Promise.all(studentLeaveCount.map(async (user) => {
+            const std = await prisma.user.findFirst({
+                where: {
+                    id: user.userId,
+                    roleId: 4
+                },
+                select:{
+                    name: true,
+                    department: true
+                }
+            })
+            return {
+                userId: user.userId,
+                name: std?.name,
+                leaveCount: user._count,
+                deparment: std?.department
+            }
+        }))
+
+        const facultyLeaveCount = await prisma.leaveRequest.groupBy({
+            by: ['userId'],
+            _count:{
+                id:true
+            },
+            where:{
+                user:{
+                    roleId: 3
+                }
+            },
+            orderBy:{
+                _count:{
+                    id: "desc"
+                }
+            },
+            
+        })
+        const facultyData = await Promise.all(facultyLeaveCount.map(async (user) => {
+            const faculty = await prisma.user.findFirst({
+                where: {
+                    id: user.userId,
+                    roleId: 3
+                },
+                select:{
+                    name: true,
+                    department: true,
+                }
+            })
+            return {
+                userId: user.userId,
+                name: faculty?.name,
+                leaveCount: user._count,
+                deparment: faculty?.department,
+            }
+        }))
+
+        const attendancePercentage = 75
+       
+        const lessAttendance = await prisma.userLeave.findMany({
+            where:{
+                attendancePercentage: {
+                    lte : attendancePercentage
+                }
+            },
+            select:{
+                attendancePercentage: true,
+                user: {
+                    select:{
+                        name: true,
+                        department:true
+                    }
+                }
+            }
+        })
+        
+        const pendingLeave = await prisma.leaveRequest.findMany({
+            where:{
+                status: "Pending"
+            },
+            select:{
+                status: true,
+                reason:true,
+                user:{
+                   select:{
+                    name: true,
+                    department: true,
+                    roleId:true
+                   }
+                }
+            }
+        })
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                StudentLeaveData: studentData,
+                FacultyLeaveData: facultyData,
+                LessAttendance: lessAttendance,
+                PendingLeave: pendingLeave
+            },
+            message: message.FETCHED
+        })
+
+    } catch (error:any) {
+        return res.status(500).json({
+            message: message.ERROR.SERVER, 
+            error: error.message
+        })
+    }
+}

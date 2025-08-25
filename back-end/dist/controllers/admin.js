@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllHodDetails = exports.getAllFacultyDetails = exports.deleteUserById = exports.getUserById = exports.updateUserDetailById = exports.getAllStudents = void 0;
+exports.getLeaveReportData = exports.getLeaveReport = exports.getAllHodDetails = exports.getAllFacultyDetails = exports.deleteUserById = exports.getUserById = exports.updateUserDetailById = exports.getAllStudents = void 0;
 const responseMessage_1 = require("../lib/responseMessage");
 const dbConnection_1 = require("../config/dbConnection");
 const validation_1 = require("../lib/validation");
@@ -180,3 +180,161 @@ const getAllHodDetails = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getAllHodDetails = getAllHodDetails;
+const getLeaveReport = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const leaveCount = yield dbConnection_1.prisma.leaveRequest.count({});
+        const approvedLeave = yield dbConnection_1.prisma.leaveRequest.count({
+            where: {
+                status: "Approved"
+            }
+        });
+        const pendingLeave = yield dbConnection_1.prisma.leaveRequest.count({
+            where: {
+                status: "Pending"
+            }
+        });
+        const totalUser = yield dbConnection_1.prisma.leaveRequest.findMany({
+            distinct: ['userId']
+        });
+        const leaveReport = {
+            AllUser: totalUser.length,
+            PendingLeave: pendingLeave,
+            ApprovedLeave: approvedLeave,
+            TotalLeaveCount: leaveCount
+        };
+        return res.status(200).json({
+            success: true,
+            data: leaveReport,
+            message: responseMessage_1.message.FETCHED
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.getLeaveReport = getLeaveReport;
+const getLeaveReportData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const studentLeaveCount = yield dbConnection_1.prisma.leaveRequest.groupBy({
+            by: ['userId'],
+            _count: {
+                id: true
+            },
+            where: {
+                user: {
+                    roleId: 4
+                }
+            },
+            orderBy: {
+                _count: {
+                    id: "desc"
+                }
+            },
+        });
+        const studentData = yield Promise.all(studentLeaveCount.map((user) => __awaiter(void 0, void 0, void 0, function* () {
+            const std = yield dbConnection_1.prisma.user.findFirst({
+                where: {
+                    id: user.userId,
+                    roleId: 4
+                },
+                select: {
+                    name: true,
+                    department: true
+                }
+            });
+            return {
+                userId: user.userId,
+                name: std === null || std === void 0 ? void 0 : std.name,
+                leaveCount: user._count,
+                deparment: std === null || std === void 0 ? void 0 : std.department
+            };
+        })));
+        const facultyLeaveCount = yield dbConnection_1.prisma.leaveRequest.groupBy({
+            by: ['userId'],
+            _count: {
+                id: true
+            },
+            where: {
+                user: {
+                    roleId: 3
+                }
+            },
+            orderBy: {
+                _count: {
+                    id: "desc"
+                }
+            },
+        });
+        const facultyData = yield Promise.all(facultyLeaveCount.map((user) => __awaiter(void 0, void 0, void 0, function* () {
+            const faculty = yield dbConnection_1.prisma.user.findFirst({
+                where: {
+                    id: user.userId,
+                    roleId: 3
+                },
+                select: {
+                    name: true,
+                    department: true,
+                }
+            });
+            return {
+                userId: user.userId,
+                name: faculty === null || faculty === void 0 ? void 0 : faculty.name,
+                leaveCount: user._count,
+                deparment: faculty === null || faculty === void 0 ? void 0 : faculty.department,
+            };
+        })));
+        const attendancePercentage = 75;
+        const lessAttendance = yield dbConnection_1.prisma.userLeave.findMany({
+            where: {
+                attendancePercentage: {
+                    lte: attendancePercentage
+                }
+            },
+            select: {
+                attendancePercentage: true,
+                user: {
+                    select: {
+                        name: true,
+                        department: true
+                    }
+                }
+            }
+        });
+        const pendingLeave = yield dbConnection_1.prisma.leaveRequest.findMany({
+            where: {
+                status: "Pending"
+            },
+            select: {
+                status: true,
+                reason: true,
+                user: {
+                    select: {
+                        name: true,
+                        department: true,
+                        roleId: true
+                    }
+                }
+            }
+        });
+        return res.status(200).json({
+            success: true,
+            data: {
+                StudentLeaveData: studentData,
+                FacultyLeaveData: facultyData,
+                LessAttendance: lessAttendance,
+                PendingLeave: pendingLeave
+            },
+            message: responseMessage_1.message.FETCHED
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.getLeaveReportData = getLeaveReportData;
