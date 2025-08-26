@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import cookieParser from "cookie-parser"
 import { authenticateUser } from "./middleware/auth"
 import cron from "node-cron"
-import { sendMail } from "./lib/email"
+import { sendMail } from "./lib/emailReminder"
 
 dotenv.config()
 const app = express()

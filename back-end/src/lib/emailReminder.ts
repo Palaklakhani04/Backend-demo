@@ -46,8 +46,6 @@ export const getPendingRequest = async () => {
         }
       }
     })
-
-    console.log(pendingReq)
     
     return pendingReq
 }

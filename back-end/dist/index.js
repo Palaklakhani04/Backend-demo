@@ -18,7 +18,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const auth_1 = require("./middleware/auth");
 const node_cron_1 = __importDefault(require("node-cron"));
-const email_1 = require("./lib/email");
+const emailReminder_1 = require("./lib/emailReminder");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -27,7 +27,7 @@ app.use((0, cookie_parser_1.default)());
 app.use(auth_1.authenticateUser);
 app.use('/api', index_1.default);
 node_cron_1.default.schedule('* * * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, email_1.sendMail)();
+    yield (0, emailReminder_1.sendMail)();
     console.log('Cron job running every minute at', new Date().toLocaleTimeString());
 }));
 app.listen(process.env.PORT, () => console.log("server is runing on loacalhost"));
