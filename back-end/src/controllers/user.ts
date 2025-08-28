@@ -13,7 +13,9 @@ dotenv.config();
 
 export const userRegister = async (req: Request, res: Response) => {
   try {
+console.log(req.body)
     const { error } = signUpSchema.validate(req.body);
+    console.log(error)
     if (error) throw new Error(message.ERROR.USER.INVALIDE_INPUT);
 
     const {
@@ -59,7 +61,7 @@ export const userRegister = async (req: Request, res: Response) => {
     console.log(error);
     return res.status(500).json({
       message: message.ERROR.SERVER,
-      error: error,
+      error: error.message,
     });
   }
 };

@@ -1,55 +1,113 @@
 "use client";
 import { Formik, Field, ErrorMessage } from "formik";
-import { TextField, Button, Box, Typography } from "@mui/material";
-import { RegisterInitalValue } from "@/lib/Types";
+import { TextField,  Box, Typography } from "@mui/material";
+import { RadioOptions, RegisterInitalValue, type register } from "@/lib/Types";
 import { RegisterSchema } from "@/lib/Validation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { registerStudent } from "@/services/auth";
-import ReusebleForm from "@/component/common/Form";
+import GenericForm from "@/component/common/GenericForm";
+import TextInput from "@/component/common/TextInput";
+import RadioGroup from "@/component/common/Radio";
+import Select from "@/component/common/Select";
+import FileInput from "@/component/common/FileInput";
+import Button from "@/component/common/Button";
+import Link from "next/link";
 
 
 const RegisterForm = () => {
-    const [file , setFile] = useState<File | null>(null)
-    const router = useRouter()
+   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-    const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(!e.target.files) return 
-        setFile(e.target.files[0])
+  const onSubmit = async (valuse: register) => {
+    try {
+      const registerData = await registerStudent(valuse, "4");
+      if (registerData.success) {
+        toast.success(registerData.message);
+        router.push("/login");
+      } else {
+        toast.error(registerData);
+      }
+    } catch (e: any) {
+      toast.error(e.message)
     }
+  };
 
-    const onSubmit = async (valuse, {resetForm}) => {
-                if(!file) return toast.error("File is required.")
-                const registerData = await registerStudent(valuse, file, "4")
-                if(registerData.success){
-                    toast.success(registerData.message)
-                    router.push("/login")
-                    resetForm()
-                }else{
-                    toast.error(registerData)
-                }
-            }
+  const genderOptions: RadioOptions = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+    { value: "Others", label: "Others" },
+  ];
+
+  const departmentOptions: RadioOptions = [
+    { value: "computer", label: "Computer" },
+    { value: "BCA", label: "BCA" },
+  ];
 
   return (
-    <div className="flex h-screen max-w-lg m-auto  border-amber-50 justify-center items-center">
-        <div className="max-w-full h-auto border-4 p-8 ">
-        <ReusebleForm
-            initialValues={RegisterInitalValue}
-            validationSchema={RegisterSchema}
-            onSubmit={async (valuse, {resetForm}) => {
-                if(!file) return toast.error("File is required.")
-                const registerData = await registerStudent(valuse, file, "4")
-                if(registerData.success){
-                    toast.success(registerData.message)
-                    router.push("/login")
-                    resetForm()
-                }else{
-                    toast.error(registerData)
-                }
-            }}
-        />
-        </div>
+    <div className="min-h-dvh grid place-items-center p-6 bg-gradient-to-br from-indigo-50 via-white to-emerald-50">
+      <div className="w-full max-w-md rounded-2xl border shadow-xl border-gray-200 bg-white p-6 ">
+        <h1 className="mb-4 text-5xl font-semibold">Create account</h1>
+        <GenericForm<register>
+          initialValues={RegisterInitalValue}
+          validationSchema={RegisterSchema}
+          onSubmit={onSubmit}
+        >
+          <TextInput
+            name="name"
+            label="Name"
+            placeholder="Your Name"
+            type="text"
+          />
+          <TextInput
+            name="email"
+            label="Email"
+            placeholder="Your Email"
+            type="email"
+          />
+          <TextInput
+            name="password"
+            label="Password"
+            placeholder="Your Password"
+            type="password"
+          />
+          <RadioGroup name="gender" label="Gender" options={genderOptions} />
+          <FileInput name="image" label="Image"/>
+          <Select name="department" label="Department" options={departmentOptions}/>
+          <TextInput
+            name="grNumber"
+            label="GrNumber"
+            placeholder="Your grNumber"
+            type="text"
+          />
+          <TextInput
+            name="phone"
+            label="Phone"
+            placeholder="Your Phone No"
+            type="text"
+          />
+          <TextInput
+            name="address"
+            label="Address"
+            placeholder="Your Address"
+            type="text"
+          />
+          <TextInput
+            name="class"
+            label="class Name"
+            placeholder="Your ClassName Ex-A"
+            type="text"
+          />
+
+          <Button type="submit" disabled={loading}>
+            {loading ? "Please wait.." : "Create Account"}
+          </Button>
+        </GenericForm>
+        <p className="mt-3 text-center text-sm text-gray-600">
+            Already have an account? <Link className="underline" href="/login">Sign in</Link>
+        </p>
+      </div>
     </div>
   );
 };

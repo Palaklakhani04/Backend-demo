@@ -25,7 +25,9 @@ dotenv_1.default.config();
 const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
+        console.log(req.body);
         const { error } = validation_1.signUpSchema.validate(req.body);
+        console.log(error);
         if (error)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_INPUT);
         const { name, email, password, gender, phone, address, grNumber, department, roleId, className, } = req.body;
@@ -56,7 +58,7 @@ const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         console.log(error);
         return res.status(500).json({
             message: responseMessage_1.message.ERROR.SERVER,
-            error: error,
+            error: error.message,
         });
     }
 });

@@ -1,24 +1,28 @@
-import { options } from "@/lib/Types";
+import { options, SelectOptions } from "@/lib/Types";
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 
-export default function SelectField(
-  name: string,
+export default function Select(
+ {
+  name,
+  label,
+  options
+ }:{ name: string,
   label: string,
-  options: options[]
+  options: SelectOptions}
 ) {
   return (
     <div className="mb-4">
-      <label htmlFor={name} className="block text-gray-700 font-bold mb-2">
+      {label && <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
         {label}
-      </label>
+      </label>}
       <Field
         as="select"
         name={name}
         id={name}
         className="shadow appearance-none bg-white border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:shadow-outline"
       >
-        <option value="" disabled selected hidden>
+        <option value="">
           Select an option
         </option>
         {options.map((option: options) => (

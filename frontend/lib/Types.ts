@@ -1,3 +1,4 @@
+import { FormikHelpers } from "formik";
 
 export interface register{
     name: string;
@@ -8,10 +9,11 @@ export interface register{
     grNumber: string;
     phone: string;
     address:string;
-    className: string;
+    class: string;
+    image: File | null
 }
 
-export const RegisterInitalValue = {
+export const RegisterInitalValue:register = {
     name: "",
     email: "",
     password: "",
@@ -20,11 +22,43 @@ export const RegisterInitalValue = {
     grNumber: "",
     phone: "",
     address: "",
-    className: ""
+    class: "",
+    image: null
 }
 
-export interface options {
-    name: string,
+export type options = {
     value: string,
-    label: string
+    label: string,
+    disabled?: boolean
+}
+
+export type RadioOptions = ReadonlyArray<options>
+export type SelectOptions = ReadonlyArray<options>
+export type Options = ReadonlyArray<options>
+
+
+export type LoginVlaues = {
+    email: string,
+    password: String
+}
+
+export const LoginInitialValues:LoginVlaues = {
+    email:"",
+    password:""
+}
+
+export type ApplyLeaveRequestType = {
+    startDate: string;
+    endDate: string;
+    requestToId: string;
+    leaveType: string;
+    reason?:string;
+}
+
+export const ApplyLeaveReqInitialValue: ApplyLeaveRequestType = {
+    startDate:"",
+    endDate: "",
+    requestToId: "",
+    leaveType: "",
+    reason:"",
 }

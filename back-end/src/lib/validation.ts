@@ -10,7 +10,7 @@ export const signUpSchema = Joi.object({
     address: Joi.string().required(),
     department: Joi.string().optional(),
     class: Joi.string().optional(),
-    roleId: Joi.number().required()
+    roleId: Joi.string().required()
 })
 
 export const roleSchema = Joi.object({

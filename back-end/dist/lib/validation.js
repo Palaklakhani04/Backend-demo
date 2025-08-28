@@ -15,7 +15,7 @@ exports.signUpSchema = joi_1.default.object({
     address: joi_1.default.string().required(),
     department: joi_1.default.string().optional(),
     class: joi_1.default.string().optional(),
-    roleId: joi_1.default.number().required()
+    roleId: joi_1.default.string().required()
 });
 exports.roleSchema = joi_1.default.object({
     name: joi_1.default.string().required(),
