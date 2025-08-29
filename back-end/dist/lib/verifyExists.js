@@ -20,7 +20,7 @@ const verifyIfUserExists = (email) => __awaiter(void 0, void 0, void 0, function
 });
 exports.verifyIfUserExists = verifyIfUserExists;
 const verifyIfRequestIdExists = (requestToId) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield dbConnection_1.prisma.user.findUnique({
+    return yield dbConnection_1.prisma.user.findFirst({
         where: {
             id: requestToId,
         },

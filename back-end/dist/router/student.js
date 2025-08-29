@@ -9,6 +9,7 @@ router.get("/", student_1.getStudentDetail);
 router.post("/leaverequest", student_1.applyLeaveRequest);
 router.get("/leave", student_1.getStudentLeave);
 router.get("/leavebalance", student_1.getStudentLeaveBlance);
+router.get("/getfaculty", student_1.getFacultyOfDepartment);
 // update student profile 
 router.put("/update/profileimage", upload_1.upload.single("image"), user_1.updateProfileImage);
 router.put("/update/profiledetail", user_1.updateUserDetail);

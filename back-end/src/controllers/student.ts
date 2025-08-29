@@ -58,7 +58,7 @@ export const applyLeaveRequest = async (req: Request, res: Response) => {
                 requestToId
             }
         })
-    
+        console.log(leaveRequest)
         if(!leaveRequest) throw new Error(message.ERROR.LEAVE.CREATED)
         
         return res.status(201).json({
@@ -129,6 +129,51 @@ export const getStudentLeaveBlance = async (req:Request, res:Response) => {
         return res.status(200).json({
             success:true,
             data: leaveBalance,
+            message: message.FETCHED
+        })
+
+    } catch (error:any) {
+        return res.status(500).json({
+            message: message.ERROR.SERVER, 
+            error: error.message
+        })
+    }
+}
+
+export const getFacultyOfDepartment = async (req:Request, res: Response) => {
+    try {
+        const {userId} = (req as any).user
+
+        const user = await prisma.user.findFirst({
+            where: {
+                id: userId
+            },
+            select: {
+                department: true
+            }
+        })
+
+        const faculty = await prisma.user.findMany({
+            where:{
+                department: user?.department,
+                OR: [
+                    {
+                        roleId: 2
+                    },
+                    {
+                        roleId: 3
+                    }
+                ]
+            },
+            select:{
+                id: true,
+                name: true
+            }
+        })
+
+        return res.status(200).json({
+            success:true,
+            faculty,
             message: message.FETCHED
         })
 

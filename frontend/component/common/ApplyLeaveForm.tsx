@@ -7,37 +7,45 @@ import Select from "./Select";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import Link from "next/link";
+import { studentApplyLeave } from "@/services/services";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const LeaveTypeOptions: options[] = [
-    {value: "firstHalf", label: "FirstHalf"},
-    {value: "secondeHalf", label: "secondeHalf"},
-    {value: "fullDay", label: "FullDay"}
+    {value: "firstHalf", label: "First Half"},
+    {value: "secondeHalf", label: "Seconde Half"},
+    {value: "fullDay", label: "Full Day"}
 ]
 
 export default function ApplyLeaveForm({
   approverOption,
-  onSubmit,
   initialValues,
   submitLabel = "submit Request",
 }: {
     approverOption: options[];
-    onSubmit: (payload: ApplyLeaveRequestType) => void | Promise<void>
     initialValues?:Partial<ApplyLeaveRequestType>
     submitLabel?:string;
 }) {
+    const router = useRouter()
   return( 
   <GenericForm<ApplyLeaveRequestType>
     initialValues={ApplyLeaveReqInitialValue}
     validationSchema={LeaveSchema}
-    onSubmit={ async (values:ApplyLeaveRequestType) => {
-        const payload: ApplyLeaveRequestType = {
-            leaveType:values.leaveType as string,
-            startDate: values.startDate,
-            endDate:values.endDate,
-            requestToId:values.requestToId,
-            reason:values.reason
+    onSubmit={ async (values:ApplyLeaveRequestType, formikHelpers) => {
+        if((values.leaveType === "firstHalf" || values.leaveType === "secondeHalf") && values.startDate !== values.endDate){
+            toast.error("half Day leave is valide for same day only")
         }
-        await onSubmit(payload)
+        if(values.startDate > values.endDate){
+            toast.error("Invalide date")
+        }
+        const studentLeave = await studentApplyLeave(values)
+        if(!studentLeave.success === true){
+            toast.error(studentLeave.message)
+        }
+        toast.success(studentLeave.message)
+        if (!formikHelpers) return
+        const { resetForm } = formikHelpers
+        resetForm()
     }}
     className="space-y-4"
   >
@@ -59,9 +67,9 @@ export default function ApplyLeaveForm({
         <TextInput name="reason" type="text" label="Reason"/>
         <div className="flex gap-2">
             <Button type="submit">{submitLabel}</Button>
-            <Link href="/dashaboard/student" className="rounded-lg border px-4 py-2 text-sm">
+            <Button  onClick={() => router.back()} className="rounded-lg border px-4 py-2 text-sm">
                 cancel
-            </Link>
+            </Button>
         </div>
     </>
   </GenericForm>

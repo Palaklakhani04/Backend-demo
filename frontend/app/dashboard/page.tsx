@@ -1,27 +1,28 @@
 "use client"
 
-import Admin from '@/component/Admin/Admin'
-import Faculty from '@/component/Faculty/Faculty'
-import Hod from '@/component/Hod/Hod'
-import Student from '@/component/Student/Student'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function Page() {
   const router = useRouter()
-    const {data: session} = useSession()
+    const {data: session, status} = useSession()
 
-  return session?.user?.roleId === 1 ? (
-    <Admin />
-  ): session?.user?.roleId === 2 ? (
-    <Hod />
-  ): session?.user?.roleId === 3 ? (
-    <Faculty />
-  ): session?.user?.roleId === 4 ? (
-    router.push("/dashboard/student")
-  ): (
-    "hhhhh"
-    // <Loder />
-  )
+    useEffect(()=> {
+      if (status === "loading") return // Wait for session to be ready
+
+      if(session?.user?.roleId === 1 ){
+        router.push("/dashboard/admin")
+      }else if(session?.user?.roleId === 2){
+        router.push("/dashboard/hod")
+      }else if(session?.user?.roleId === 3){
+        router.push("/dashboard/faculty")
+      }else if(session?.user?.roleId === 4){
+        router.push("/dashboard/student")
+      }else{
+        console.log("No valid roleId found.")
+      }
+    },[session, status, router])
+
+  return <div>Redirecting...</div>
 }

@@ -21,7 +21,7 @@ const corsOptions = {
 };
 app.use((0, cors_1.default)(corsOptions));
 app.use('/api', index_1.default);
-// cron.schedule(' * * * * *', async() => {
+// cron.schedule(' 0 6 * * *', async() => {
 //     await sendMail()
 //   console.log('Cron job running every minute at', new Date().toLocaleTimeString());
 // });

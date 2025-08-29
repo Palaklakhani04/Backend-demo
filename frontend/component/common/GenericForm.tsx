@@ -1,10 +1,10 @@
 "use client";
-import { Formik, FormikValues } from "formik";
+import { Formik, FormikHelpers, FormikValues } from "formik";
 
 type Props<T> = {
   initialValues: T;
   validationSchema: any;
-  onSubmit: (values: any) => any;
+  onSubmit: (values: T, formikHelpers?: FormikHelpers<T>) => void | Promise<void>;
   children: React.ReactNode;
   className?: string;
 };

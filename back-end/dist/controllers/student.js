@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getStudentLeaveBlance = exports.getStudentLeave = exports.applyLeaveRequest = exports.getStudentDetail = void 0;
+exports.getFacultyOfDepartment = exports.getStudentLeaveBlance = exports.getStudentLeave = exports.applyLeaveRequest = exports.getStudentDetail = void 0;
 const responseMessage_1 = require("../lib/responseMessage");
 const dbConnection_1 = require("../config/dbConnection");
 const validation_1 = require("../lib/validation");
@@ -64,6 +64,7 @@ const applyLeaveRequest = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 requestToId
             }
         });
+        console.log(leaveRequest);
         if (!leaveRequest)
             throw new Error(responseMessage_1.message.ERROR.LEAVE.CREATED);
         return res.status(201).json({
@@ -139,3 +140,45 @@ const getStudentLeaveBlance = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.getStudentLeaveBlance = getStudentLeaveBlance;
+const getFacultyOfDepartment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.user;
+        const user = yield dbConnection_1.prisma.user.findFirst({
+            where: {
+                id: userId
+            },
+            select: {
+                department: true
+            }
+        });
+        const faculty = yield dbConnection_1.prisma.user.findMany({
+            where: {
+                department: user === null || user === void 0 ? void 0 : user.department,
+                OR: [
+                    {
+                        roleId: 2
+                    },
+                    {
+                        roleId: 3
+                    }
+                ]
+            },
+            select: {
+                id: true,
+                name: true
+            }
+        });
+        return res.status(200).json({
+            success: true,
+            faculty,
+            message: responseMessage_1.message.FETCHED
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.getFacultyOfDepartment = getFacultyOfDepartment;

@@ -28,7 +28,7 @@ export const RegisterInitalValue:register = {
 
 export type options = {
     value: string,
-    label: string,
+    label?: string,
     disabled?: boolean
 }
 
@@ -61,4 +61,23 @@ export const ApplyLeaveReqInitialValue: ApplyLeaveRequestType = {
     requestToId: "",
     leaveType: "",
     reason:"",
+}
+
+export type LeaveStatus = "Pending" | "Approved" |"Rejected"
+
+export type LeaveRequestType = {
+    id:string;
+    startDate: string;
+    endDate: string;
+    requestToId: string;
+    leaveType: string;
+    reason?:string;
+    status: LeaveStatus
+}
+
+export type LeaveBalanceType = {
+    availableLeave: number;
+    attendeancePercentage: string;
+    approvedLeave: number;
+    rejectedLeave: number;
 }
