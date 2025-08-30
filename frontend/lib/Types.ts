@@ -76,8 +76,20 @@ export type LeaveRequestType = {
 }
 
 export type LeaveBalanceType = {
-    availableLeave: number;
-    attendeancePercentage: string;
-    approvedLeave: number;
-    rejectedLeave: number;
+    AvailableLeave: number;
+    AttendeancePercentage: number;
+    ApprovedLeave: number;
+    RejectedLeave: number;
+}
+
+export type ProfileType = {
+    name: string;
+    email: string;
+    gender: string;
+    department: string;
+    grNumber: string;
+    phone: string;
+    address:string;
+    class: string;
+    image: File | null
 }

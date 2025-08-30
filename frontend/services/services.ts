@@ -37,7 +37,7 @@ export const studentApplyLeave = async (values: ApplyLeaveRequestType) => {
 
 export const getAllLeave = async () => {
   const { data } = await api.get("/student/leave")
-  if(data.success) return data
+  if(data.success) return data 
 }
 
 export const getLeaveBalance = async () => {

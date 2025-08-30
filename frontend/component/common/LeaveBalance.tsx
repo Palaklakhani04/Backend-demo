@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { ReactNode, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,12 +10,9 @@ import {
 } from "@mui/material";
 import { LeaveBalanceType } from "@/lib/Types";
 
-type LeaveBalanceProps = {
-  leaveBalanceData: LeaveBalanceType[];
-};
-
-export default function LeaveBalance({ leaveBalanceData }: LeaveBalanceProps) {
+export default function LeaveBalance({ leaveBalanceData }: { leaveBalanceData: LeaveBalanceType[]}) {
   return (
+    <div className="grid place-items-center justify-center min-h-dvh">
     <TableContainer sx={{ margin: 4 }}>
       <Table sx={{ minWidth: 650, border: 2 }} aria-label="simple table">
         <TableHead sx={{ border: 2 }}>
@@ -27,27 +24,29 @@ export default function LeaveBalance({ leaveBalanceData }: LeaveBalanceProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {Array.isArray(leaveBalanceData) && leaveBalanceData.length > 0 ? (
-            leaveBalanceData.map((r, index) => (
-              <TableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="center">{r.availableLeave}</TableCell>
-                <TableCell align="center">{r.attendeancePercentage}</TableCell>
-                <TableCell align="center">{r.approvedLeave}</TableCell>
-                <TableCell align="center">{r.rejectedLeave}</TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
+          <TableRow
+            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+          >
+          {leaveBalanceData?.length > 0 ? (
+            leaveBalanceData?.map((r, index) => (
+                <TableCell key={index} align="center">
+                  {r?.AvailableLeave}
+                  {r?.AttendeancePercentage}
+                  {r?.ApprovedLeave}
+                  {r?.RejectedLeave}
+                </TableCell>
+              ))
+   
+            ): (
+          
               <TableCell colSpan={4} align="center">
                 No data available
               </TableCell>
-            </TableRow>
           )}
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
+    </div>
   );
 }

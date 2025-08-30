@@ -119,12 +119,12 @@ export const getStudentLeaveBlance = async (req:Request, res:Response) => {
         const approvedLeave = allLeaveRequests.filter((value) => value.status === "Approved")
         const rejectedLeave = allLeaveRequests.filter((value) => value.status === "Rejected")
 
-        const leaveBalance = {
-            AvailableLeave: availableLeaveOfStudent?.availableLeave,
-            AttendeancePercentage: availableLeaveOfStudent?.attendancePercentage,
-            ApprovedLeave: approvedLeave.length,
-            RejectedLeave: rejectedLeave.length
-        }
+        const leaveBalance = [
+            {AvailableLeave: availableLeaveOfStudent?.availableLeave},
+            {AttendeancePercentage: availableLeaveOfStudent?.attendancePercentage},
+            {ApprovedLeave: approvedLeave.length},
+            {RejectedLeave: rejectedLeave.length}
+        ]
 
         return res.status(200).json({
             success:true,

@@ -18,6 +18,9 @@ export default function page() {
         if(!leaveBalanceData.data){
           toast.error(leaveBalanceData.data.message)
         }
+
+        const data = Object.values(leaveBalanceData.data)
+        console.log(data)
         setData(leaveBalanceData.data)
       } catch (error: any) {
         console.log(error)
@@ -30,8 +33,7 @@ export default function page() {
     <>
       <LeaveBalance
         leaveBalanceData={data ?? []}
-      />
-      
+      />              
     </>
-  )
+  )                    
 }

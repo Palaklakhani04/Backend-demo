@@ -120,12 +120,12 @@ const getStudentLeaveBlance = (req, res) => __awaiter(void 0, void 0, void 0, fu
         });
         const approvedLeave = allLeaveRequests.filter((value) => value.status === "Approved");
         const rejectedLeave = allLeaveRequests.filter((value) => value.status === "Rejected");
-        const leaveBalance = {
-            AvailableLeave: availableLeaveOfStudent === null || availableLeaveOfStudent === void 0 ? void 0 : availableLeaveOfStudent.availableLeave,
-            AttendeancePercentage: availableLeaveOfStudent === null || availableLeaveOfStudent === void 0 ? void 0 : availableLeaveOfStudent.attendancePercentage,
-            ApprovedLeave: approvedLeave.length,
-            RejectedLeave: rejectedLeave.length
-        };
+        const leaveBalance = [
+            { AvailableLeave: availableLeaveOfStudent === null || availableLeaveOfStudent === void 0 ? void 0 : availableLeaveOfStudent.availableLeave },
+            { AttendeancePercentage: availableLeaveOfStudent === null || availableLeaveOfStudent === void 0 ? void 0 : availableLeaveOfStudent.attendancePercentage },
+            { ApprovedLeave: approvedLeave.length },
+            { RejectedLeave: rejectedLeave.length }
+        ];
         return res.status(200).json({
             success: true,
             data: leaveBalance,
