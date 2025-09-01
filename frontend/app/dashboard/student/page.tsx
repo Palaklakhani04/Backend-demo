@@ -10,7 +10,7 @@ export default function page() {
   return (
     <>
     <div className="grid items-center justify-center">
-      <h1 className="text-3xl text-center m-8">student Dashboard</h1>
+      <h1 className="text-3xl text-center m-8">Student Dashboard</h1>
       <div className="flex m-8 ">
         <div className="">
           <Card
@@ -23,7 +23,7 @@ export default function page() {
                 type="submit"
                 onClick={() => router.push("/dashboard/student/applyLeave")}
               >
-                Apply{" "}
+                Apply
               </Button>
             </div>
           </Card>
@@ -69,7 +69,7 @@ export default function page() {
             <div className="w-40">
               <Button
                 type="submit"
-                onClick={() => router.push("/dashboard/student/profile")}
+                onClick={() => router.push("/dashboard/profile")}
               >
                 View
               </Button>

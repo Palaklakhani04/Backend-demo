@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import ApplyLeaveForm from "@/component/common/ApplyLeaveForm";
-import { ApplyLeaveRequestType, options } from "@/lib/Types";
+import { options } from "@/lib/Types";
 import { api } from "@/services/services";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";

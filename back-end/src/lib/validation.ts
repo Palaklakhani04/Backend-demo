@@ -40,7 +40,7 @@ export const leaveRequestSchema = Joi.object({
     endDate: Joi.string().required(),
     requestToId: Joi.string().required(),
     reason: Joi.string().required(),
-    leaveType: Joi.string().valid('firstHalf','secondeHalf','fullDay').required(),
+    leaveType: Joi.string().valid('firstHalf','secondHalf','fullDay').required(),
     status: Joi.string().default("Pending").valid('Pending','Approved','Rejected').required()
 })
 

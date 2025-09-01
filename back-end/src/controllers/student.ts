@@ -34,6 +34,7 @@ export const getStudentDetail = async (req:Request, res:Response) => {
 
 export const applyLeaveRequest = async (req: Request, res: Response) => {
     try {
+        console.log(req.body);
         const { error } = leaveRequestSchema.validate(req.body)
         console.log(error)
         if(error) throw new Error(message.ERROR.INVALIDE_INPUT)

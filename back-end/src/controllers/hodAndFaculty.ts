@@ -64,6 +64,7 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
         })
 
         const leaveDay = await Days(leaveData?.startDate as string, leaveData?.endDate as string)
+        console.log(leaveDay);
 
         const isLeave = await verifyAvailableDays(leaveData?.startDate as string, leaveData?.endDate as string, userData?.userId as string)
         if(!isLeave) throw new Error(message.ERROR.LEAVE.USED)

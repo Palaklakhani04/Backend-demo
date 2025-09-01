@@ -82,7 +82,7 @@ export default function Profile({
   return (
     <div className="flex flex-col min-h-dvh place-items-center p-6">
       <div className="flex w-md items-center p-2 justify-evenly ">
-        <h1 className=" w-sm text-3xl font-bold text-gray-800">your Profile</h1>
+        <h1 className=" w-sm text-3xl font-bold text-gray-800">Your Profile</h1>
         <div className="w-40">
           <Button className="" onClick={() => router.back()}>
             back
@@ -122,13 +122,7 @@ export default function Profile({
 
         {/* Edit Profile Route */}
         <Link
-          href={
-            profileDetail.roleId === 4
-              ? "/dashboard/student/editprofile"
-              : profileDetail.roleId === 1
-              ? "/admin/editprofile"
-              : "/staff/editprofile"
-          }
+          href={"/dashboard/editprofile"}
           className="mt-6 block transform rounded bg-indigo-600 px-4 py-2 text-center text-white transition duration-300 ease-in-out hover:scale-105 hover:bg-indigo-500"
         >
           Edit Profile

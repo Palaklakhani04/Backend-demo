@@ -43,7 +43,7 @@ export default function Navbar() {
         {isLoggedIn ? (
           <div className="flex items-center gap-4">
             <Link
-              href="/dashboard/student/profile"
+              href="/dashboard/profile"
               className="flex items-center gap-2 text-gray-700 hover:text-indigo-600"
             >
                 <div className="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-sm font-semibold">

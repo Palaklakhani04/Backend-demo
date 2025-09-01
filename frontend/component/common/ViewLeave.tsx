@@ -45,7 +45,6 @@ export default function ViewLeave({
           <label className="text-sm font-medium  text-gray-700">
             Filter by Status
           </label>
-
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as LeaveStatus | "all")}
@@ -59,7 +58,7 @@ export default function ViewLeave({
           </select>
           <div className="w-40">
             <Button
-              className="p-4"
+              className="px-4"
               onClick={() => router.back()}
             >
               back
@@ -69,11 +68,49 @@ export default function ViewLeave({
 
         {/* Conditional rendering */}
         {filtered.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={4} align="center">
-              No data available
-            </TableCell>
-          </TableRow>
+          <TableContainer sx={{ margin: 4 }}>
+            <Table sx={{ minWidth: 650, border: 2 }}>
+              <TableHead sx={{ border: 2 }}>
+                <TableRow>
+                  <TableCell align="center">Date</TableCell>
+                  <TableCell align="center">Type</TableCell>
+                  <TableCell align="center">Reason</TableCell>
+                  <TableCell align="center">Status</TableCell>
+                  {renderActions && <TableCell align="center"></TableCell>}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-14 w-14 mb-3 text-gray-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M9 13h6m2 8H7a2 2 0 01-2-2V5a2 2 0 
+                     012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 
+                     2z"
+                        />
+                      </svg>
+                      <span className="text-lg font-semibold">
+                        No Data Available
+                      </span>
+                      <span className="text-sm text-gray-400">
+                        Please check back later
+                      </span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
         ) : (
           <TableContainer sx={{ margin: 4 }}>
             <Table sx={{ minWidth: 650, border: 2 }} aria-label="simple table">

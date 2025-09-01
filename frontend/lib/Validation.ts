@@ -34,5 +34,5 @@ export const LeaveSchema = Yup.object().shape({
   }),
   requestToId: Yup.string().required(),
   reason: Yup.string().required(),
-  leaveType: Yup.string().oneOf(['firstHalf','secondeHalf','fullDay']).required(),
+  leaveType: Yup.string().oneOf(['firstHalf','secondHalf','fullDay']).required(),
 })

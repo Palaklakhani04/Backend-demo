@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 
 const LeaveTypeOptions: options[] = [
   { value: "firstHalf", label: "First Half" },
-  { value: "secondeHalf", label: "Seconde Half" },
+  { value: "secondHalf", label: "Seconde Half" },
   { value: "fullDay", label: "Full Day" },
 ];
 
@@ -76,7 +76,7 @@ export default function ApplyLeaveForm({
         />
         <TextInput name="reason" type="text" label="Reason" />
         <div className="flex gap-2">
-          <Button type="submit">{submitLabel}</Button>
+          <Button type="submit" onClick={() => router.back()}>{submitLabel}</Button>
           <Button
             type="button"
             onClick={() => router.back()}

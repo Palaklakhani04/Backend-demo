@@ -13,10 +13,8 @@ export default function Page() {
 
       if(session?.user?.roleId === 1 ){
         router.push("/dashboard/admin")
-      }else if(session?.user?.roleId === 2){
+      }else if(session?.user?.roleId === 2 || session?.user?.roleId === 3){
         router.push("/dashboard/hod")
-      }else if(session?.user?.roleId === 3){
-        router.push("/dashboard/faculty")
       }else if(session?.user?.roleId === 4){
         router.push("/dashboard/student")
       }else{
