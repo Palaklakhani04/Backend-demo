@@ -50,6 +50,7 @@ exports.getLeaveStatus = getLeaveStatus;
 const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
+        console.log(id);
         const { status } = req.body;
         const leaveData = yield dbConnection_1.prisma.leaveRequest.findFirst({
             where: {
@@ -60,6 +61,7 @@ const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 user: true
             }
         });
+        console.log(leaveData);
         const userData = yield dbConnection_1.prisma.userLeave.findFirst({
             where: {
                 userId: leaveData === null || leaveData === void 0 ? void 0 : leaveData.user.id
@@ -69,6 +71,7 @@ const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const isLeave = yield (0, verifyExists_1.verifyAvailableDays)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate, userData === null || userData === void 0 ? void 0 : userData.userId);
         if (!isLeave)
             throw new Error(responseMessage_1.message.ERROR.LEAVE.USED);
+        console.log(isLeave);
         if (status === "Approved") {
             const isApproved = yield dbConnection_1.prisma.leaveRequest.update({
                 where: {

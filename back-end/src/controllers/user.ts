@@ -8,6 +8,7 @@ import { verifyIfUserExists } from "../lib/verifyExists";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createUserLeave } from "../lib/userLeave";
+import { toDataUri } from "../lib/util";
 
 dotenv.config();
 
@@ -39,7 +40,7 @@ console.log(req.body)
         email,
         password: hashPsw,
         gender,
-        image: req.file?.path || "",
+        image: toDataUri(req.file?.path!),
         phone,
         address,
         grNumber: grNumber ? grNumber : null,
@@ -68,7 +69,9 @@ console.log(req.body)
 
 export const userLogin = async (req: Request, res: Response) => {
   try {
+    console.log(req.body)
     const { error } = loginSchema.validate(req.body);
+    console.log(error)
     if (error) throw new Error(message.ERROR.USER.INVALIDE_INPUT);
 
     const { email, password } = req.body;
@@ -102,6 +105,7 @@ export const userLogin = async (req: Request, res: Response) => {
       token: accessToken,
     });
   } catch (error: any) {
+    console.log(error)
     return res.status(500).json({
       message: message.ERROR.SERVER,
       error: error.message,
@@ -112,7 +116,9 @@ export const userLogin = async (req: Request, res: Response) => {
 
 export const updateUserDetail = async (req:Request, res:Response) => {
     try {
+    
         const { error } = updateUserSchema.validate(req.body)
+        console.log(error)
         if(error) throw new Error(message.ERROR.USER.INVALIDE_INPUT)
 
         const {name, email, gender, phone, address , grNumber, department, roleId , className } = req.body as userRegisterType
@@ -131,7 +137,7 @@ export const updateUserDetail = async (req:Request, res:Response) => {
                 grNumber,
                 department,
                 roleId: Number(roleId), 
-                class: className  
+                class: className 
             }
         })
 

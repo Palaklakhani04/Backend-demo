@@ -21,6 +21,7 @@ const verifyExists_1 = require("../lib/verifyExists");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const userLeave_1 = require("../lib/userLeave");
+const util_1 = require("../lib/util");
 dotenv_1.default.config();
 const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -38,7 +39,7 @@ const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 email,
                 password: hashPsw,
                 gender,
-                image: ((_a = req.file) === null || _a === void 0 ? void 0 : _a.path) || "",
+                image: (0, util_1.toDataUri)((_a = req.file) === null || _a === void 0 ? void 0 : _a.path),
                 phone,
                 address,
                 grNumber: grNumber ? grNumber : null,
@@ -65,7 +66,9 @@ const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.userRegister = userRegister;
 const userLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(req.body);
         const { error } = validation_1.loginSchema.validate(req.body);
+        console.log(error);
         if (error)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_INPUT);
         const { email, password } = req.body;
@@ -95,6 +98,7 @@ const userLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (error) {
+        console.log(error);
         return res.status(500).json({
             message: responseMessage_1.message.ERROR.SERVER,
             error: error.message,
@@ -105,6 +109,7 @@ exports.userLogin = userLogin;
 const updateUserDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { error } = validation_1.updateUserSchema.validate(req.body);
+        console.log(error);
         if (error)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_INPUT);
         const { name, email, gender, phone, address, grNumber, department, roleId, className } = req.body;

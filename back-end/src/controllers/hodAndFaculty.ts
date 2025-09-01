@@ -44,8 +44,9 @@ export const getLeaveStatus = async (req:Request, res:Response) => {
 export const updateLeaveStatus = async (req:Request, res:Response) => {
     try {
         const { id } = req.params
+        console.log(id)
         const { status } = req.body
-    
+        
         const leaveData = await prisma.leaveRequest.findFirst({
             where:{
                 id: Number(id),
@@ -55,7 +56,7 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
                 user: true
             }
         })
-
+        console.log(leaveData)
         const userData = await prisma.userLeave.findFirst({
             where: {
                 userId: leaveData?.user.id
@@ -66,7 +67,7 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
 
         const isLeave = await verifyAvailableDays(leaveData?.startDate as string, leaveData?.endDate as string, userData?.userId as string)
         if(!isLeave) throw new Error(message.ERROR.LEAVE.USED)
-
+            console.log(isLeave)
         if(status === "Approved"){
             const isApproved = await prisma.leaveRequest.update({
                 where:{
@@ -76,7 +77,7 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
                     status
                 }
             })
-
+            
             console.log(isApproved)
             if(isApproved) {
                 await updateUserLeaveData( userData?.availableLeave as number, userData?.usedLeave as number ,leaveDay as number, userData?.id as number, userData?.totalWorkingDays as number)

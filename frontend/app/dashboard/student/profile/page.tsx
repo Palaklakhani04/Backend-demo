@@ -14,7 +14,6 @@ export default function Page() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-       
         const res = await api.get("/student");
         console.log(res)
        

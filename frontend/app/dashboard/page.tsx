@@ -24,5 +24,8 @@ export default function Page() {
       }
     },[session, status, router])
 
-  return <div>Redirecting...</div>
+  return (
+  <div>Redirecting...
+    
+  </div>)
 }

@@ -94,3 +94,40 @@ export type ProfileType = {
     image: File | null ;
     roleId: number
 }
+
+export type ProfileDetailsType = {
+    name: string;
+    email: string;
+    gender: string;
+    department: string;
+    grNumber: string;
+    phone: string;
+    address:string;
+    class: string;
+}
+
+export const ProfileInitalValue = {
+    name: "",
+    email: "",
+    gender: "",
+    department: "",
+    grNumber: "",
+    phone: "",
+    address: "",
+    class: "",
+}
+
+export type LeaveStatusData = {
+    id:number;
+    userId:string
+    user:{
+        id:string;
+        name:string;
+        department:string;
+    }
+    leaveType: string;
+    startDate:string;
+    endDate:string;
+    reason:string;
+    status: string;
+}

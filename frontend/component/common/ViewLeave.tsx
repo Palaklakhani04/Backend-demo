@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
+import Button from "./Button";
 
 type ViewLeaveTableProps = {
   requests: LeaveRequestType[];
@@ -40,7 +41,7 @@ export default function ViewLeave({
     >
       <div>
         {/* Filter Section */}
-        <div className=" flex items-center w-full justify-center  grid-cols-2">
+        <div className=" flex items-center w-full justify-around">
           <label className="text-sm font-medium  text-gray-700">
             Filter by Status
           </label>
@@ -56,13 +57,14 @@ export default function ViewLeave({
               </option>
             ))}
           </select>
-
-          <button
-            className="p-4  rounded-2xl bg-blue-300"
-            onClick={() => router.back()}
-          >
-            back
-          </button>
+          <div className="w-40">
+            <Button
+              className="p-4"
+              onClick={() => router.back()}
+            >
+              back
+            </Button>
+          </div>
         </div>
 
         {/* Conditional rendering */}

@@ -14,7 +14,7 @@ exports.signUpSchema = joi_1.default.object({
     phone: joi_1.default.string().required(),
     address: joi_1.default.string().required(),
     department: joi_1.default.string().optional(),
-    class: joi_1.default.string().optional(),
+    className: joi_1.default.string().optional(),
     roleId: joi_1.default.string().required()
 });
 exports.roleSchema = joi_1.default.object({
@@ -33,7 +33,7 @@ exports.updateUserSchema = joi_1.default.object({
     phone: joi_1.default.string().required(),
     address: joi_1.default.string().required(),
     department: joi_1.default.string().optional(),
-    class: joi_1.default.string().optional(),
+    className: joi_1.default.string().optional(),
     roleId: joi_1.default.number().required()
 });
 exports.leaveRequestSchema = joi_1.default.object({

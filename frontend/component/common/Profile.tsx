@@ -1,5 +1,3 @@
-
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -10,8 +8,15 @@ import { FaCamera } from "react-icons/fa";
 
 import { ProfileType } from "@/lib/Types";
 import { api, changeProfileImage } from "@/services/services";
+import Button from "./Button";
+import { useRouter } from "next/navigation";
 
-export default function Profile({ profileDetail }: { profileDetail: ProfileType }) {
+export default function Profile({
+  profileDetail,
+}: {
+  profileDetail: ProfileType;
+}) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [btnDis, setBtnDis] = useState(true);
 
@@ -23,7 +28,7 @@ export default function Profile({ profileDetail }: { profileDetail: ProfileType 
     console.log(profileDetail.image);
     if (!profileDetail?.image) return "";
     const isAbsolute = /^https?:\/\//i.test(profileDetail?.image as any);
-    return  isAbsolute ? profileDetail.image : `${profileDetail.image}`;
+    return isAbsolute ? profileDetail.image : `${profileDetail.image}`;
   }, [profileDetail?.image]);
 
   const handleEditImageClick = () => {
@@ -49,12 +54,10 @@ export default function Profile({ profileDetail }: { profileDetail: ProfileType 
     try {
       setBtnDis(true);
       setLoading(true);
-      // Expecting changeProfileImage(file: File) to do FormData upload
+
       const response = await changeProfileImage(selectedFile);
       toast.success(response?.data?.message || "Profile image updated");
       setIsModalOpen(false);
-      // optional: refresh the current page or revalidate user data if you have a query layer
-      // e.g., router.refresh() (Next 13+) or refetch user profile query
     } catch (error: any) {
       console.error("Image update error:", error);
       const msg =
@@ -77,9 +80,15 @@ export default function Profile({ profileDetail }: { profileDetail: ProfileType 
   }
 
   return (
-    <div className="grid min-h-dvh place-items-center p-6">
-      <h1 className="mb-8 text-center text-4xl font-bold text-gray-800">Your Profile</h1>
-
+    <div className="flex flex-col min-h-dvh place-items-center p-6">
+      <div className="flex w-md items-center p-2 justify-evenly ">
+        <h1 className=" w-sm text-3xl font-bold text-gray-800">your Profile</h1>
+        <div className="w-40">
+          <Button className="" onClick={() => router.back()}>
+            back
+          </Button>
+        </div>
+      </div>
       <div className="w-full max-w-lg rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         {/* Avatar */}
         <div className="relative mx-auto mb-6 h-48 w-48">
@@ -107,6 +116,7 @@ export default function Profile({ profileDetail }: { profileDetail: ProfileType 
           <DetailRow label="Address" value={profileDetail.address} />
           <DetailRow label="Gr Number" value={profileDetail.grNumber} />
           <DetailRow label="Department" value={profileDetail.department} />
+          <DetailRow label="Class" value={profileDetail.class} />
           <DetailRow label="Role" value={roleLabel(profileDetail.roleId)} />
         </div>
 
@@ -114,7 +124,7 @@ export default function Profile({ profileDetail }: { profileDetail: ProfileType 
         <Link
           href={
             profileDetail.roleId === 4
-              ? "/student/editprofile"
+              ? "/dashboard/student/editprofile"
               : profileDetail.roleId === 1
               ? "/admin/editprofile"
               : "/staff/editprofile"
@@ -184,7 +194,13 @@ export default function Profile({ profileDetail }: { profileDetail: ProfileType 
   );
 }
 
-function DetailRow({ label, value }: { label: string; value?: string | number }) {
+function DetailRow({
+  label,
+  value,
+}: {
+  label: string;
+  value?: string | number;
+}) {
   return (
     <div className="flex items-start border-b py-1">
       <span className="mr-3 font-medium">{label}:</span>

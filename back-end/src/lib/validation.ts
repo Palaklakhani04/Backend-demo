@@ -9,7 +9,7 @@ export const signUpSchema = Joi.object({
     phone: Joi.string().required(),
     address: Joi.string().required(),
     department: Joi.string().optional(),
-    class: Joi.string().optional(),
+    className: Joi.string().optional(),
     roleId: Joi.string().required()
 })
 
@@ -31,7 +31,7 @@ export const updateUserSchema = Joi.object({
     phone: Joi.string().required(),
     address: Joi.string().required(),
     department: Joi.string().optional(),
-    class: Joi.string().optional(),
+    className: Joi.string().optional(),
     roleId: Joi.number().required()
 })
 

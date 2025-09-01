@@ -13,7 +13,7 @@ export const loginval = async (email: string, password: string) => {
     console.log(data);
     if (data.success) return data;
   } catch (error: any) {
-    throw new Error(error.response.data.message);
+    throw new Error(error.response.data.error);
   }
 };
 

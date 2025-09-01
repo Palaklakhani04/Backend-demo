@@ -15,6 +15,7 @@ export default function Login() {
     const router = useRouter()
     const onsubmit =async (valuse: LoginVlaues ) => {
         try {
+            console.log("Hit")
             const loginVlaues =  await loginval(
                 valuse.email.trim(),
                 valuse.password.trim()
@@ -34,6 +35,7 @@ export default function Login() {
                 }
             }
         } catch (error:any) {
+            console.log(error)
             toast.error(error.message)
         }
     }
