@@ -39,7 +39,7 @@ export type Options = ReadonlyArray<options>
 
 export type LoginVlaues = {
     email: string,
-    password: String
+    password: string
 }
 
 export const LoginInitialValues:LoginVlaues = {
@@ -91,5 +91,6 @@ export type ProfileType = {
     phone: string;
     address:string;
     class: string;
-    image: File | null
+    image: File | null ;
+    roleId: number
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApplyLeaveRequestType } from "@/lib/Types";
 import axios from "axios";
 
@@ -37,10 +38,22 @@ export const studentApplyLeave = async (values: ApplyLeaveRequestType) => {
 
 export const getAllLeave = async () => {
   const { data } = await api.get("/student/leave")
-  if(data.success) return data 
+  if (data.success) return data
 }
 
 export const getLeaveBalance = async () => {
   const { data } = await api.get("/student/leavebalance")
-  if(data.success) return data
+  if (data.success) return data
+}
+
+export const changeProfileImage = async (file: any) => {
+  const formData = new FormData()
+  formData.append("image", file)
+
+  const response = await api.put("/student/update/profileimage", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
+  return response
 }
