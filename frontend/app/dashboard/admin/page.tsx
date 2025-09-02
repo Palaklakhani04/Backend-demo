@@ -1,4 +1,4 @@
-import LeaveReport from "@/component/Admin/LeaveReport";
+import LeaveReportData from "@/component/Admin/LeaveReport";
 import Sidebar from "@/component/Admin/Sidebar";
 import React from "react";
 
@@ -11,8 +11,7 @@ export default function Page() {
         </div>
         <div className="text-gray-800 grid place-items-center w-dvw">
           <div className="m-4">
-            <h1 className="text-2xl min-w-full">Admin Dashboard</h1>
-            <LeaveReport />
+            <LeaveReportData />
           </div>
         </div>
       </div>

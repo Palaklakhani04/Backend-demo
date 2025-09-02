@@ -65,7 +65,7 @@ export default function UpdateLeaveStatus() {
 
   return (
     <div className="grid place-items-center justify-center min-h-dvh">
-      <div className="text-center text-gray-600">
+      <div className="text-center mt-22 text-gray-600">
         <div className="flex w-full mb-10 items-center  justify-evenly ">
           <h1 className="text-3xl font-bold text-gray-800">
             Leave status

@@ -23,7 +23,7 @@ export default function page() {
         console.log(data)
         setData(leaveBalanceData.data)
       } catch (error: any) {
-        console.log(error)
+        toast.error(error.message)
       }
     }
     getLeaveBalanceData()

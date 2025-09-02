@@ -11,14 +11,14 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { LeaveReport } from "@/lib/Types";
+import { PendingLeave } from "@/lib/Types";
 
 
 type Props = {
-  data: LeaveReport[];
+  data: PendingLeave[];
 };
 
-export default function LeaveTable({ data }: Props) {
+export default function PendingLeaveData({ data }: Props) {
   console.log(data);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -41,24 +41,29 @@ export default function LeaveTable({ data }: Props) {
 
   return (
     <div className="grid place-items-center p-4 bg-gray-50">
-      <div className="max-w-4xl">
-        <h1 className="text-xl font-bold text-center mb-4">Student Leave Report</h1>
+      <div className=" max-w-4xl">
+        <h1 className="text-xl font-bold text-center mb-4">Student Pending Leaves</h1>
+
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell align="center">Name</TableCell>
                 <TableCell align="center">Department</TableCell>
-                <TableCell align="center">Leave Count</TableCell>
+                <TableCell align="center">Role Id</TableCell>
+                <TableCell align="center">Reason</TableCell>
+                <TableCell align="center">Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell align="center">{row.name}</TableCell>
-                    <TableCell align="center">{row.deparment}</TableCell>
-                    <TableCell align="center">{row.leaveCount.id}</TableCell>
+                    <TableCell align="center">{row.user.name}</TableCell>
+                    <TableCell align="center">{row.user.department}</TableCell>
+                    <TableCell align="center">{row.user.roleId}</TableCell>
+                    <TableCell align="center">{row.reason}</TableCell>
+                    <TableCell align="center">{row.status}</TableCell>
                   </TableRow>
                 ))
               ) : (

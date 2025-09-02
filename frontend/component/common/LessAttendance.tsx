@@ -11,14 +11,14 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { LeaveReport } from "@/lib/Types";
+import { LessAttendanceReport } from "@/lib/Types";
 
 
 type Props = {
-  data: LeaveReport[];
+  data: LessAttendanceReport[];
 };
 
-export default function LeaveTable({ data }: Props) {
+export default function LessAttendance({ data }: Props) {
   console.log(data);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -40,25 +40,26 @@ export default function LeaveTable({ data }: Props) {
   };
 
   return (
-    <div className="grid place-items-center p-4 bg-gray-50">
-      <div className="max-w-4xl">
-        <h1 className="text-xl font-bold text-center mb-4">Student Leave Report</h1>
+    <div className=" grid place-items-center p-4 bg-gray-50">
+      <div className="w-full max-w-4xl">
+        <h1 className="text-xl font-bold text-center mb-4">Student Less Attendance</h1>
+
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell align="center">Name</TableCell>
                 <TableCell align="center">Department</TableCell>
-                <TableCell align="center">Leave Count</TableCell>
+                <TableCell align="center">Attendance Percentage</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell align="center">{row.name}</TableCell>
-                    <TableCell align="center">{row.deparment}</TableCell>
-                    <TableCell align="center">{row.leaveCount.id}</TableCell>
+                    <TableCell align="center">{row.user.name}</TableCell>
+                    <TableCell align="center">{row.user.department}</TableCell>
+                    <TableCell align="center">{row.attendancePercentage}</TableCell>
                   </TableRow>
                 ))
               ) : (

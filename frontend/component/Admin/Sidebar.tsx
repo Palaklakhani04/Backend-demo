@@ -121,42 +121,6 @@ const Sidebar = () => {
   );
 
   const renderMenu = () => {
-    switch (session?.user.roleId) {
-      // case 4: // Student
-      //   return (
-      //     <li className="hover:bg-gray-700 rounded-md p-2 transition-colors duration-300">
-      //       <div
-      //         className="flex items-center space-x-2 cursor-pointer"
-      //         onClick={() => toggleMenu("leave")}
-      //       >
-      //         <FaBriefcase />
-      //         {isOpen && <span>Leave</span>}
-      //         {isOpen &&
-      //           (isLeaveMenuOpen ? <FaChevronUp /> : <FaChevronDown />)}
-      //       </div>
-      //       <ul className={`${isOpen && isLeaveMenuOpen ? "block" : "hidden"} ml-4 mt-2`}>
-      //         <li className="mb-2">
-      //           <SidebarLink href="/student/applyleave" icon={<FaFileAlt />} text="Apply Leave" isOpen={isOpen} />
-      //         </li>
-      //         <li className="mb-2">
-      //           <SidebarLink href="/student/viewleave" icon={<FaEye />} text="View Leave" isOpen={isOpen} />
-      //         </li>
-      //         <li>
-      //           <SidebarLink href="/student/viewleavebalance" icon={<FaBalanceScale />} text="View Leave Balance" isOpen={isOpen} />
-      //         </li>
-      //       </ul>
-      //     </li>
-      //   );
-
-      // case 2:
-      // case 3: // Staff
-      //   return (
-      //     <li className="hover:bg-gray-700 rounded-md p-2 transition-colors duration-300">
-      //       <SidebarLink href="/staff/leavereport" icon={<FaEye />} text="View Leave Status" isOpen={isOpen} />
-      //     </li>
-      //   );
-
-      default: // Admin
         return (
           <>
             <SidebarMenu
@@ -199,17 +163,13 @@ const Sidebar = () => {
               icon={<FaBriefcase />}
               label="Leave Details"
               items={[
-                { href: "/admin/useravailableleave", icon: <FaRegClock />, label: "User Available Leave" },
-                { href: "/admin/userleave", icon: <FaList />, label: "Student Leaves" },
+                { href: "/admin/studentleave", icon: <FaList />, label: "Student Leave" },
               ]}
             />
-            <li className="hover:bg-gray-700 rounded-md p-2 transition-colors duration-300">
-              <SidebarLink href="/admin/leavereport" icon={<FaCalendarAlt />} text="Leave Report" isOpen={isOpen} />
-            </li>
           </>
         );
     }
-  };
+  
 
   return (
     <div

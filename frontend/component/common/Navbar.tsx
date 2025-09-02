@@ -40,15 +40,21 @@ export default function Navbar() {
         <Link href="/dashboard" className="text-xl font-bold text-indigo-600">
           LMS
         </Link>
+        {(isLoggedIn && session.user.roleId === 1) &&
+          <div className="grid place-items-center justify-end w-1/3 text-gray-700 font-bold text-xl">
+            <h1>Admin Dashboard</h1>
+          </div>
+        }
+
         <div className="flex ">
           {isLoggedIn && session.user.roleId === 1 && (
-            <button
-              onClick={() => router.back()}
-              className="flex ml-4 items-center  hover:text-blue-600 transition-colors"
-            >
-              <FaTachometerAlt className="text-lg " />
-              <span className="hidden sm:inline px-2 "> dashboard</span>
-            </button>
+              <button
+                onClick={() => router.back()}
+                className="flex ml-4 items-center  hover:text-blue-600 transition-colors"
+              >
+                <FaTachometerAlt className="text-lg " />
+                <span className="hidden sm:inline px-2 "> dashboard</span>
+              </button>
           )}
 
           {isLoggedIn ? (

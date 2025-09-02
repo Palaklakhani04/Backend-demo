@@ -160,6 +160,32 @@ export type UserTypeData ={
 
 export type LeaveReport = {
   name: string;
+  deparment: string;
+  leaveCount:{
+    id: number;
+  } 
+};
+
+export type LeaveReportLessAttend = {
+  name: string;
   department: string;
   leaveCount: number;
 };
+
+export type PendingLeave = {
+    reason: string;
+    status: string;
+    user:{
+        name:string;
+        department:string;
+        roleId: number;
+    }
+}
+
+export type LessAttendanceReport = {
+    attendancePercentage: string;
+    user:{
+        name:string;
+        department:string;
+    }
+}

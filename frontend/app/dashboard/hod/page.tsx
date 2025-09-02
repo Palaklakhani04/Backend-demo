@@ -11,8 +11,8 @@ export default function Page() {
       <div className='w-full text-center justify-center '>
         <h1 className='tex-xl text-gray-700 font-bold'>HOD And Faculty dashboard</h1>
         <Card
-          title="Apply Leave Request"
-          subtitle="Leave Request"
+          title="Update Leave Request Status"
+          subtitle="Leave Request Status"
           className="m-2 text-gray-700"
         >
           <div className="w-40">
