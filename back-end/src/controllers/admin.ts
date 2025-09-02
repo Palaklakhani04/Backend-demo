@@ -34,11 +34,17 @@ export const getAllStudents = async (req:Request, res:Response) => {
 
 export const updateUserDetailById = async (req:Request, res:Response) => {
     try {
+        console.log(typeof(req.body.roleId))
+        console.log(req.body)
         const { error } = updateUserSchema.validate(req.body)
+        console.log(error)
         if(error) throw new Error(message.ERROR.USER.INVALIDE_INPUT)
 
         const {name, email, gender, phone, address , grNumber, department, roleId , className } = req.body 
+        
         const { id } = req.params
+        console.log(id)
+        
 
         const updateUser = await prisma.user.update({
             where: {
@@ -56,7 +62,7 @@ export const updateUserDetailById = async (req:Request, res:Response) => {
                 class: className  
             }
         })
-
+        console.log(updateUser)
         if(!updateUser) throw new Error(message.ERROR.NOT_FOUND)
 
         return res.status(201).json({

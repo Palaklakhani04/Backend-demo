@@ -68,6 +68,7 @@ const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, functi
             }
         });
         const leaveDay = yield (0, verifyExists_1.Days)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate);
+        console.log(leaveDay);
         const isLeave = yield (0, verifyExists_1.verifyAvailableDays)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate, userData === null || userData === void 0 ? void 0 : userData.userId);
         if (!isLeave)
             throw new Error(responseMessage_1.message.ERROR.LEAVE.USED);

@@ -9,10 +9,10 @@ export default function page() {
   const router = useRouter();
   return (
     <>
-    <div className="grid items-center justify-center">
+    <div className="grid items-center min-h-dvh justify-center">
+      <div className="">
       <h1 className="text-3xl text-center m-8">Student Dashboard</h1>
-      <div className="flex m-8 ">
-        <div className="">
+        <div className="flex">
           <Card
             title="Apply Leave Request"
             subtitle="Leave Request"
@@ -45,7 +45,7 @@ export default function page() {
             </div>
           </Card>
         </div>
-        <div>
+        <div className="flex">
           <Card
             title="View Leave Balance"
             subtitle="View Leave Balance"

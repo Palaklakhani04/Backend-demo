@@ -80,10 +80,11 @@ export default function Profile({
   }
 
   return (
-    <div className="flex flex-col min-h-dvh place-items-center p-6">
-      <div className="flex w-md items-center p-2 justify-evenly ">
-        <h1 className=" w-sm text-3xl font-bold text-gray-800">Your Profile</h1>
-        <div className="w-40">
+    <div className="flex min-h-dvh flex-col place-items-center p-6">
+      <div className="min-h-full mt-14">
+      <div className="flex w-md items-center px-6 justify-evenly ">
+        <h1 className=" w-xs text-2xl font-bold text-gray-800">Your Profile</h1>
+        <div className="w-34 ">
           <Button className="" onClick={() => router.back()}>
             back
           </Button>
@@ -91,7 +92,7 @@ export default function Profile({
       </div>
       <div className="w-full max-w-lg rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         {/* Avatar */}
-        <div className="relative mx-auto mb-6 h-48 w-48">
+        <div className="relative mx-auto mb-4 h-48 w-48">
           <img
             src={previewUrl ?? avatarSrc}
             alt={`${profileDetail.name}'s profile`}
@@ -184,6 +185,7 @@ export default function Profile({
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

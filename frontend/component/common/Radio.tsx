@@ -5,18 +5,18 @@ import React from 'react'
 export default function RadioGroup( {name, label, options}:{name:string, label:string, options:RadioOptions}) {
   return (
     <div className='mb-4'>
-      {label && <label htmlFor={name} className='block text-gray-700 font-bold mb-2'>
+      {label && <label htmlFor={name} className='block text-sm text-gray-600 font-semibold mb-2'>
         {label}
       </label>}
       <div className='flex item-center space-x-3'>
         {options.map((option) => (
-              <label key={option.value} className='text-gray-700 font-bold'>
+              <label key={option.value} className='text-gray-700 text-sm'>
                 <Field 
                     type="radio"
                     name={name}
                     value={option.value}
                     disable={option.disabled}
-                    className= "form-radio h-5 w-5 text-indigo-600"
+                    className= "form-radio mr-1 h-3 w-3  text-indigo-600"
                   />
                 {option.label} 
               </label> 

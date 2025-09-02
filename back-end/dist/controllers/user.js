@@ -127,7 +127,7 @@ const updateUserDetail = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 grNumber,
                 department,
                 roleId: Number(roleId),
-                class: className
+                class: className || " "
             }
         });
         return res.status(201).json({

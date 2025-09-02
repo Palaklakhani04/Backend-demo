@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ApplyLeaveRequestType } from "@/lib/Types";
+import { ApplyLeaveRequestType, register, UserType } from "@/lib/Types";
 import axios from "axios";
 
 export const api = axios.create({
@@ -56,4 +56,95 @@ export const changeProfileImage = async (file: any) => {
     },
   })
   return response
+}
+
+// Replace this with your actual API call
+export const addUsers = async (values: register, roleId: string) => {
+  try {
+    // Example of file handling using FormData
+    const formData = new FormData();
+    
+    formData.append("name", values.name.trim());
+    formData.append("email", values.email.trim());
+    formData.append("password", values.password.trim());
+    formData.append("gender", values.gender.trim());
+    formData.append("grNumber", values.grNumber.trim());
+    formData.append("department", values.department.trim());
+    formData.append("phone", values.phone.trim());
+    formData.append("address", values.address.trim());
+    formData.append("className", values.class.trim());
+    formData.append("roleId", roleId );
+    if(values.image){
+      formData.append("image", values.image, values.image.name);
+    }
+    const obj = Object.fromEntries(formData.entries());
+
+    const {data} = await api.post("/admin/createUser", {
+        ...obj,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    console.log(data)
+   
+    return data;
+  } catch (error:any) {
+     throw new Error(error.data.error);
+  }
+};
+
+
+export const getAllStudent = async () => {
+  const {data} = await api.get("/admin/students")
+  console.log(data)
+  return data
+}
+
+export const getAllFaculty = async () => {
+  const {data} = await api.get("/admin/faculty")
+  console.log(data)
+  return data
+}
+
+export const getAllHod = async () => {
+  const {data} = await api.get("/admin/hod")
+  console.log(data)
+  return data
+}
+
+export const updateUser = async (id: string, values: UserType) => {
+  try {
+    const payload = {
+                name: values.name,
+                email: values.email,
+                gender: values.gender,
+                grNumber: values.grNumber,
+                department: values.department,
+                className: values.className,
+                address: values.address,
+                phone: values.phone,
+                roleId: values.roleId
+              };
+      
+    const data = await api.put(`/admin/update/${id}`, payload)
+    console.log(data)
+    return data
+  } catch (error:any) {
+    throw new Error(error.data.manage)
+  }
+}
+
+export const getUserById = async (id:string) => {
+  const {data} = await api.get(`/admin/user/${id}`)
+  if(data.success === true)
+    console.log(data)
+    return data
+}
+
+export const getLeaveReport = async () => {
+  const { data } = await api.get('/admin/leavereportdata')
+  if(data.success === true)
+    return data
 }

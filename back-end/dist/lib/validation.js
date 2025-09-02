@@ -33,14 +33,14 @@ exports.updateUserSchema = joi_1.default.object({
     phone: joi_1.default.string().required(),
     address: joi_1.default.string().required(),
     department: joi_1.default.string().optional(),
-    className: joi_1.default.string().optional(),
-    roleId: joi_1.default.number().required()
+    className: joi_1.default.string(),
+    roleId: joi_1.default.number().optional()
 });
 exports.leaveRequestSchema = joi_1.default.object({
     startDate: joi_1.default.string().required(),
     endDate: joi_1.default.string().required(),
     requestToId: joi_1.default.string().required(),
     reason: joi_1.default.string().required(),
-    leaveType: joi_1.default.string().valid('firstHalf', 'secondeHalf', 'fullDay').required(),
+    leaveType: joi_1.default.string().valid('firstHalf', 'secondHalf', 'fullDay').required(),
     status: joi_1.default.string().default("Pending").valid('Pending', 'Approved', 'Rejected').required()
 });

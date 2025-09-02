@@ -31,8 +31,8 @@ export const updateUserSchema = Joi.object({
     phone: Joi.string().required(),
     address: Joi.string().required(),
     department: Joi.string().optional(),
-    className: Joi.string().optional(),
-    roleId: Joi.number().required()
+    className: Joi.string(),
+    roleId: Joi.number().optional()
 })
 
 export const leaveRequestSchema = Joi.object({

@@ -14,7 +14,6 @@ import Button from "./Button";
 
 type ViewLeaveTableProps = {
   requests: LeaveRequestType[];
-  renderActions?: (req: LeaveRequestType) => React.ReactNode;
   className?: string;
 };
 
@@ -25,8 +24,7 @@ const statusOption: Array<{ value: LeaveStatus | "all"; label: string }> = [
   { value: "Rejected", label: "Rejected" },
 ];
 export default function ViewLeave({
-  requests,
-  renderActions,
+  requests
 }: ViewLeaveTableProps) {
   const router = useRouter();
   const [status, setStatus] = useState<LeaveStatus | "all">("all");
@@ -76,7 +74,6 @@ export default function ViewLeave({
                   <TableCell align="center">Type</TableCell>
                   <TableCell align="center">Reason</TableCell>
                   <TableCell align="center">Status</TableCell>
-                  {renderActions && <TableCell align="center"></TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -120,7 +117,6 @@ export default function ViewLeave({
                   <TableCell align="center">Type</TableCell>
                   <TableCell align="center">Reason</TableCell>
                   <TableCell align="center">Status</TableCell>
-                  {renderActions && <TableCell align="center"></TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -135,9 +131,6 @@ export default function ViewLeave({
                     </TableCell>
                     <TableCell align="center">{r.reason}</TableCell>
                     <TableCell align="center">{r.status}</TableCell>
-                    {renderActions && (
-                      <TableCell align="center">{renderActions(r)}</TableCell>
-                    )}
                   </TableRow>
                 ))}
               </TableBody>

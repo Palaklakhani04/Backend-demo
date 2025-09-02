@@ -8,7 +8,7 @@ export const RegisterSchema = Yup.object().shape({
   grNumber: Yup.number().integer().required().typeError("Number Only"),
   department: Yup.string().required(),
   address: Yup.string().required(),
-  class: Yup.string().required(),
+  class: Yup.string().optional(),
 });
 
 export const loginSchema = Yup.object().shape({

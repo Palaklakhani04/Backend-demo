@@ -27,19 +27,36 @@ const createUserLeave = (id) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.createUserLeave = createUserLeave;
 const updateUserLeaveData = (availableLeave, usedLeave, leaveDay, id, totalWorkingDays) => __awaiter(void 0, void 0, void 0, function* () {
-    const usedLeaveData = usedLeave + leaveDay;
-    const availableLeaveData = availableLeave - leaveDay;
-    const attendancePercentageData = (((totalWorkingDays - usedLeaveData) / totalWorkingDays) * 100).toFixed(2);
-    const userLeave = yield dbConnection_1.prisma.userLeave.update({
-        where: {
-            id: id
-        },
-        data: {
-            attendancePercentage: attendancePercentageData,
-            availableLeave: availableLeaveData,
-            usedLeave: usedLeaveData
-        }
-    });
+    if (leaveDay === 0) {
+        const usedLeaveData = usedLeave + 1;
+        const availableLeaveData = availableLeave - 1;
+        const attendancePercentageData = (((totalWorkingDays - usedLeaveData) / totalWorkingDays) * 100).toFixed(2);
+        const userLeave = yield dbConnection_1.prisma.userLeave.update({
+            where: {
+                id: id
+            },
+            data: {
+                attendancePercentage: attendancePercentageData,
+                availableLeave: availableLeaveData,
+                usedLeave: usedLeaveData
+            }
+        });
+    }
+    else {
+        const usedLeaveData = usedLeave + leaveDay;
+        const availableLeaveData = availableLeave - leaveDay;
+        const attendancePercentageData = (((totalWorkingDays - usedLeaveData) / totalWorkingDays) * 100).toFixed(2);
+        const userLeave = yield dbConnection_1.prisma.userLeave.update({
+            where: {
+                id: id
+            },
+            data: {
+                attendancePercentage: attendancePercentageData,
+                availableLeave: availableLeaveData,
+                usedLeave: usedLeaveData
+            }
+        });
+    }
 });
 exports.updateUserLeaveData = updateUserLeaveData;
 // export const getUserLeaveData = async () => {

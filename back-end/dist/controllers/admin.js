@@ -42,11 +42,15 @@ const getAllStudents = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllStudents = getAllStudents;
 const updateUserDetailById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(typeof (req.body.roleId));
+        console.log(req.body);
         const { error } = validation_1.updateUserSchema.validate(req.body);
+        console.log(error);
         if (error)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_INPUT);
         const { name, email, gender, phone, address, grNumber, department, roleId, className } = req.body;
         const { id } = req.params;
+        console.log(id);
         const updateUser = yield dbConnection_1.prisma.user.update({
             where: {
                 id: id,
@@ -63,6 +67,7 @@ const updateUserDetailById = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 class: className
             }
         });
+        console.log(updateUser);
         if (!updateUser)
             throw new Error(responseMessage_1.message.ERROR.NOT_FOUND);
         return res.status(201).json({

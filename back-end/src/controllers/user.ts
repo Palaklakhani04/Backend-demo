@@ -116,7 +116,6 @@ export const userLogin = async (req: Request, res: Response) => {
 
 export const updateUserDetail = async (req:Request, res:Response) => {
     try {
-    
         const { error } = updateUserSchema.validate(req.body)
         console.log(error)
         if(error) throw new Error(message.ERROR.USER.INVALIDE_INPUT)
@@ -137,7 +136,7 @@ export const updateUserDetail = async (req:Request, res:Response) => {
                 grNumber,
                 department,
                 roleId: Number(roleId), 
-                class: className 
+                class: className ||" "
             }
         })
 

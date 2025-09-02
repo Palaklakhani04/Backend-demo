@@ -41,6 +41,7 @@ const getStudentDetail = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.getStudentDetail = getStudentDetail;
 const applyLeaveRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(req.body);
         const { error } = validation_1.leaveRequestSchema.validate(req.body);
         console.log(error);
         if (error)

@@ -67,11 +67,12 @@ export default function UpdateLeaveStatus() {
     <div className="grid place-items-center justify-center min-h-dvh">
       <div className="text-center text-gray-600">
         <div className="flex w-full mb-10 items-center  justify-evenly ">
-          <h1 className="w-sm text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-gray-800">
             Leave status
           </h1>
-          <label>
-            Leave status
+          <div>
+          <label className="p-1">
+            Leave status :
           </label>
           <select
             value={status}
@@ -84,6 +85,7 @@ export default function UpdateLeaveStatus() {
               </option>
             ))}
           </select>
+          </div>
           <div className="w-40">
             <Button className="" onClick={() => router.back()}>
               back
@@ -175,7 +177,7 @@ export default function UpdateLeaveStatus() {
                         </button>
                         <button
                           onClick={() => handleStatusChange(row.id, "Pending")}
-                          className={`px-2 py-1 rounded text-white text-sm ${row.status === "Pending" ? "bg-gray-800" : "bg-gray-300"
+                          className={`px-2 py-1 rounded text-white text-sm ${row.status === "Pending" ? "bg-gray-800" : "bg-gray-400"
                             }`}
                         >
                           Pending

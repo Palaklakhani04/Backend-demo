@@ -6,7 +6,7 @@ export default function FileInput({ name , label }: {name: string, label?: strin
 
   return (
     <div className='mb-4'>
-      {label && <label className='block text-sm font-medium'>{label}</label>}
+      {label && <label className='block text-sm font-medium mb-2'>{label}</label>}
       <Field name={name}>
         {({form}: any) => (
             <input
@@ -23,7 +23,7 @@ export default function FileInput({ name , label }: {name: string, label?: strin
       {
         preview && (
             // eslint-disable-next-line @ next/next/no-img-element
-            <img src={preview} alt='preview' className='h-20 mt-20 rounded'/>
+            <img src={preview} alt='preview' className='h-20  rounded'/>
         )
       }
       <ErrorMessage name={name} component="div" className='text-red-500 text-sm mt-2' />
