@@ -156,16 +156,10 @@ const Sidebar = () => {
                 { href: "/admin/viewuser/faculty", icon: <FaList />, label: "View Faculty Lists" },
               ]}
             />
-            <SidebarMenu
-              isOpen={isOpen}
-              isMenuOpen={isAdminLeaveMenuOpen}
-              toggleMenu={() => toggleMenu("adminLeave")}
-              icon={<FaBriefcase />}
-              label="Leave Details"
-              items={[
-                { href: "/admin/studentleave", icon: <FaList />, label: "Student Leave" },
-              ]}
-            />
+            
+            <li className="hover:bg-gray-700 rounded-md p-2 transition-colors duration-300">
+              <SidebarLink href="/admin/leavereport" icon={<FaCalendarAlt />} text="Leave Report" isOpen={isOpen} />
+            </li>
           </>
         );
     }

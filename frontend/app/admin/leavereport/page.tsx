@@ -1,18 +1,14 @@
-
-import LeaveSummaryPage from "@/component/Admin/LeaveSummary";
-import Sidebar from "@/component/Admin/Sidebar";
+"use client"
+import LeaveReportData from "@/component/Admin/LeaveReport";
 import React from "react";
 
 export default function Page() {
   return (
-    <div className="grid justify-start">
+    <div className="max-h-dvh grid justify-start">
       <div className=" mt-14">
-        <div className="fixed">
-          <Sidebar />
-        </div>
         <div className="text-gray-800 grid place-items-center w-dvw">
           <div className="m-4">
-            <LeaveSummaryPage/>
+            <LeaveReportData />
           </div>
         </div>
       </div>
