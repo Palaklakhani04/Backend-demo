@@ -41,15 +41,15 @@ export default function LeaveTable({ data }: Props) {
 
   return (
     <div className="grid place-items-center p-4 bg-gray-50">
-      <div className="max-w-4xl">
+      <div className="w-full max-w-4xl">
         <h1 className="text-xl font-bold text-center mb-4">Student Leave Report</h1>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Department</TableCell>
-                <TableCell align="center">Leave Count</TableCell>
+                <TableCell align="center" sx={{fontWeight: "bold"}}>Name</TableCell>
+                <TableCell align="center" sx={{fontWeight: "bold"}}>Department</TableCell>
+                <TableCell align="center" sx={{fontWeight: "bold"}}>Leave Count</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

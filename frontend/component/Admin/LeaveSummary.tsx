@@ -19,7 +19,7 @@ export default function LeaveSummaryPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // replace this with your real API endpoint
+  
         const res = await api.get("/admin/leavereport"); 
 
         console.log(res.data);

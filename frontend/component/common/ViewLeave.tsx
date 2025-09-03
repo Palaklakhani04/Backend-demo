@@ -39,10 +39,12 @@ export default function ViewLeave({
     >
       <div>
         {/* Filter Section */}
-        <div className=" flex items-center w-full justify-around">
-          <label className="text-sm font-medium  text-gray-700">
-            Filter by Status
-          </label>
+        <div className=" flex items-center w-full justify-evenly">
+          <h1 className="text-2xl font-bold text-gray-700">
+            View Status
+          </h1>
+          <div>
+              <label className="text-sm text-gray-600">Leave Status: </label>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as LeaveStatus | "all")}
@@ -54,9 +56,10 @@ export default function ViewLeave({
               </option>
             ))}
           </select>
-          <div className="w-40">
+          </div>
+          <div className="w-30">
             <Button
-              className="px-4"
+              className=""
               onClick={() => router.back()}
             >
               back

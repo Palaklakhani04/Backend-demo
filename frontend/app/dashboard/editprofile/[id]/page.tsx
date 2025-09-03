@@ -65,10 +65,16 @@ export default function EditUserPage() {
   if (!userData) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="min-h-dvh grid place-items-center p-6 bg-gradient-to-br from-indigo-50 via-white to-emerald-50">
+    <div className="min-h-dvh grid place-items-center bg-gradient-to-br from-indigo-50 via-white to-emerald-50">
       <div className="w-full max-w-sm rounded-2xl border shadow-xl text-gray-700 border-gray-200 bg-white p-4">
-        <h1 className="mb-4 text-2xl font-semibold text-center">Edit User</h1>
-
+        <div className="flex justify-around my-4">
+          <h1 className="text-2xl font-bold">Edit User</h1>
+          <div className="w-30">
+            <Button onClick={() => router.back()}>
+              back
+            </Button>
+          </div>
+        </div>
         <GenericForm<UserType>
           initialValues={{
             name: userData.name || "",
@@ -85,13 +91,42 @@ export default function EditUserPage() {
           onSubmit={handleSubmit}
         >
           <TextInput name="name" label="Name" placeholder="Name" type="text" />
-          <TextInput name="email" label="Email" placeholder="Email" type="email" />
+          <TextInput
+            name="email"
+            label="Email"
+            placeholder="Email"
+            type="email"
+          />
           <RadioGroup name="gender" label="Gender" options={genderOptions} />
-          <Select name="department" label="Department" options={departmentOptions} />
-          <TextInput name="grNumber" label="GR Number" placeholder="GR Number" type="text" />
-          <TextInput name="phone" label="Phone" placeholder="Phone" type="text" />
-          <TextInput name="address" label="Address" placeholder="Address" type="text" />
-          <TextInput name="class" label="Class" placeholder="Class (e.g. A)" type="text" />
+          <Select
+            name="department"
+            label="Department"
+            options={departmentOptions}
+          />
+          <TextInput
+            name="grNumber"
+            label="GR Number"
+            placeholder="GR Number"
+            type="text"
+          />
+          <TextInput
+            name="phone"
+            label="Phone"
+            placeholder="Phone"
+            type="text"
+          />
+          <TextInput
+            name="address"
+            label="Address"
+            placeholder="Address"
+            type="text"
+          />
+          <TextInput
+            name="class"
+            label="Class"
+            placeholder="Class (e.g. A)"
+            type="text"
+          />
 
           <Button type="submit" disabled={loading}>
             {loading ? "Updating..." : "Update User"}

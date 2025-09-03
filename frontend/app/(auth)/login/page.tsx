@@ -15,7 +15,6 @@ export default function Login() {
     const router = useRouter()
     const onsubmit =async (valuse: LoginVlaues ) => {
         try {
-            console.log("Hit")
             const loginVlaues =  await loginval(
                 valuse.email.trim(),
                 valuse.password.trim()
@@ -41,8 +40,8 @@ export default function Login() {
     }
   return (
     <div className='grid place-items-center min-h-dvh p-6 bg-gradient-to-br from-indigo-50 via-white to-emerald-50'>
-      <div className='w-full max-w-lg rounded-2xl border border-gray-200 bg-white p-6 shadow-xl'>
-        <h1 className='mb-4 text-xl font-semibold'>Sign In</h1>
+      <div className='w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-6 shadow-xl'>
+        <h1 className='mb-4 text-xl text-gray-700 text-center font-semibold'>Sign In</h1>
         <GenericForm<LoginVlaues>
             initialValues={LoginInitialValues}
             validationSchema={loginSchema}

@@ -48,9 +48,9 @@ export default function LessAttendance({ data }: Props) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Department</TableCell>
-                <TableCell align="center">Attendance Percentage</TableCell>
+                <TableCell align="center" sx={{fontWeight: "bold"}}>Name</TableCell>
+                <TableCell align="center" sx={{fontWeight: "bold"}}>Department</TableCell>
+                <TableCell align="center" sx={{fontWeight: "bold"}}>Attendance Percentage</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

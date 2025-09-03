@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { PendingLeave } from "@/lib/Types";
 
-
 type Props = {
   data: PendingLeave[];
 };
@@ -41,18 +40,30 @@ export default function PendingLeaveData({ data }: Props) {
 
   return (
     <div className="grid place-items-center p-4 bg-gray-50">
-      <div className=" max-w-4xl">
-        <h1 className="text-xl font-bold text-center mb-4">Student Pending Leaves</h1>
+      <div className="w-full max-w-4xl">
+        <h1 className="text-xl font-bold text-center mb-4">
+          Student Pending Leaves
+        </h1>
 
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Department</TableCell>
-                <TableCell align="center">Role Id</TableCell>
-                <TableCell align="center">Reason</TableCell>
-                <TableCell align="center">Status</TableCell>
+                <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                  Name
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                  Department
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                  Role Id
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                  Reason
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                  Status
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -90,4 +101,3 @@ export default function PendingLeaveData({ data }: Props) {
     </div>
   );
 }
-

@@ -11,7 +11,7 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { UserType, UserTypeData } from "@/lib/Types";
+import { UserTypeData } from "@/lib/Types";
 import Button from "../common/Button";
 import { useRouter } from "next/navigation";
 
@@ -22,16 +22,8 @@ type Props = {
 export default function ViewUserList({ userData}: Props) {
   const [page, setPage] = useState(0); // current page index
   const [rowsPerPage, setRowsPerPage] = useState(5); // default rows per page
-
-  const getTitle = () => {
-    if (userData.length === 0) return "User List";
-    const role = userData[0].roleId;
-    if (role === 2) return "View HOD Data";
-    if (role === 3) return "View Faculty Data";
-    return "View Student Data";
-  };
-
   const router = useRouter()
+
   const handleEdit = (id: string) => {
     router.push(`/dashboard/editprofile/${id}`)
   }
@@ -52,10 +44,18 @@ export default function ViewUserList({ userData}: Props) {
     setPage(0); // Reset to first page
   };
 
+  const getTitle = () => {
+    if (userData.length === 0) return "User List";
+    const role = userData[0].roleId;
+    if (role === 2) return "View HOD Data";
+    if (role === 3) return "View Faculty Data";
+    return "View Student Data";
+  };
+
   return (
     <div className="grid place-items-center justify-center min-h-dvh">
       <div className="w-full max-w-6xl">
-        <h1 className="text-3xl font-bold text-center text-gray-800 my-4">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-8">
           {getTitle()}
         </h1>
 
