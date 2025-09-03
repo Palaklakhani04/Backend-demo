@@ -48,6 +48,7 @@ export const getLeaveBalance = async () => {
 
 export const changeProfileImage = async (file: any) => {
   const formData = new FormData()
+  console.log(file)
   formData.append("image", file)
 
   const response = await api.put("/student/update/profileimage", formData, {

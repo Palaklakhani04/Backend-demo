@@ -155,7 +155,7 @@ const updateProfileImage = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 id: userId
             },
             data: {
-                image: `${(_a = req.file) === null || _a === void 0 ? void 0 : _a.path}`
+                image: (0, util_1.toDataUri)((_a = req.file) === null || _a === void 0 ? void 0 : _a.path)
             }
         });
         if (!newProfile)

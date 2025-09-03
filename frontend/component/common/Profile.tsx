@@ -27,8 +27,7 @@ export default function Profile({
   const avatarSrc = useMemo(() => {
     console.log(profileDetail.image);
     if (!profileDetail?.image) return "";
-    const isAbsolute = /^https?:\/\//i.test(profileDetail?.image as any);
-    return isAbsolute ? profileDetail.image : `${profileDetail.image}`;
+    return `${profileDetail.image}`;
   }, [profileDetail?.image]);
 
   const handleEditImageClick = () => {

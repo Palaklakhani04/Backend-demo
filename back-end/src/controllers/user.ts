@@ -163,10 +163,11 @@ export const updateProfileImage = async (req: Request, res: Response) => {
         id: userId
       },
       data:{
-        image:`${req.file?.path}`
+        image:toDataUri(req.file?.path!)
       }
     })
 
+    
     if(!newProfile) throw new Error(message.ERROR.NOT_FOUND)
 
     return res.status(201).json({
