@@ -9,6 +9,9 @@ exports.message = {
         DELETE: "User Successfully Deleted.",
         LOGOUT: "Successfully Logout.",
     },
+    OTP: {
+        SEND: " OTP Send successfully",
+    },
     FETCHED: "Data Retrived Successfully.",
     ROLE: {
         CREATED: "Role Created.",
@@ -40,6 +43,13 @@ exports.message = {
             USED: "All leaves Are Used.",
             CREATED: "Error In Creating Leave Request.",
             NOT_FOUND: "Data Not Found.",
+        },
+        OTP: {
+            SEND: "Could not send OTP email.",
+            INVALIDE_INPUT: "Invalide OTP",
+        },
+        PASSWORD: {
+            UPDATE: "Password Reset Successfully."
         }
     }
 };

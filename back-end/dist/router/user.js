@@ -9,4 +9,6 @@ router.post("/signup", upload_1.upload.single("image"), auth_1.UniqueUserRegiste
 router.post("/signin", user_1.userLogin);
 router.put("/update", auth_1.verifyUserAuthorization, user_1.updateUserDetail);
 router.post("/logout", user_1.logout);
+router.post("/forget", user_1.forgetPsw);
+router.post("/reset", user_1.resetPsw);
 exports.default = router;

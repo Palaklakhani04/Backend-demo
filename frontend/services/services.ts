@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ApplyLeaveRequestType, register, UserType } from "@/lib/Types";
+import { ApplyLeaveRequestType, forgetPswType, register, resetPswType, UserType } from "@/lib/Types";
 import axios from "axios";
 
 export const api = axios.create({
@@ -132,7 +132,7 @@ export const updateUser = async (id: string, values: UserType) => {
     console.log(data)
     return data
   } catch (error:any) {
-    throw new Error(error.data.manage)
+    throw new Error(error.data.message)
   }
 }
 
@@ -147,4 +147,33 @@ export const getLeaveReport = async () => {
   const { data } = await api.get('/admin/leavereportdata')
   if(data.success === true)
     return data
+}
+
+export const otpSend = async (values: forgetPswType) => {
+  try {
+    const res = await api.post("/users/forget", 
+      {email: values.email.trim()}
+    )
+    if(res.data.success === true)
+      return res
+  } catch (error:any) {
+    throw new Error(error.data.message)
+  }
+}
+
+
+export const resetPsw = async (values:resetPswType) => {
+  try {
+    const res = await api.post("/users/reset", 
+      {
+        email: values.email.trim(),
+        otp: values.otp.trim(),
+        newPassword: values.newPassword.trim()
+      }
+    )
+    if(res.data.success === true)
+      return res
+  } catch (error:any) {
+    throw new Error(error.data.message)
+  }
 }

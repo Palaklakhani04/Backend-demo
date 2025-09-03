@@ -189,3 +189,19 @@ export type LessAttendanceReport = {
         department:string;
     }
 }
+
+export type forgetPswType = {
+    email: string
+}
+
+export type resetPswType = {
+    email: string;
+    otp: string;
+    newPassword: string;
+}
+
+export const resetPswInit = {
+    email: "",
+    otp: "",
+    newPassword: ""
+}

@@ -54,6 +54,9 @@ export default function Login() {
         <p className="mt-3 text-center text-sm text-gray-600">
             No account? <Link className="underline" href="/register">Sign up</Link>
         </p>
+        <p className="mt-3 text-center text-sm text-gray-600">
+            forget Password? <Link className="underline" href="/forget">Forget Password</Link>
+        </p>
       </div>
     </div>
   )

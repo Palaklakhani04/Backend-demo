@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.updateProfileImage = exports.updateUserDetail = exports.userLogin = exports.userRegister = void 0;
+exports.resetPsw = exports.forgetPsw = exports.logout = exports.updateProfileImage = exports.updateUserDetail = exports.userLogin = exports.userRegister = void 0;
 const validation_1 = require("../lib/validation");
 const responseMessage_1 = require("../lib/responseMessage");
 const dbConnection_1 = require("../config/dbConnection");
@@ -22,6 +22,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const userLeave_1 = require("../lib/userLeave");
 const util_1 = require("../lib/util");
+const auth_1 = require("../lib/auth");
 dotenv_1.default.config();
 const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -186,3 +187,84 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 exports.logout = logout;
+const forgetPsw = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email } = req.body;
+        if (!email)
+            throw new Error(responseMessage_1.message.ERROR.NOT_FOUND);
+        const user = yield (0, verifyExists_1.verifyIfUserExists)(email);
+        if (!user)
+            throw new Error(responseMessage_1.message.ERROR.USER.NOT_FOUND);
+        const otp = yield (0, auth_1.generateOtp)();
+        const tokenHash = yield bcrypt_1.default.hash(otp.toString(), 10);
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+        yield dbConnection_1.prisma.oTP.create({
+            data: {
+                userId: user.id,
+                tokenHash,
+                expiresAt
+            }
+        });
+        yield (0, auth_1.sendOtpEmail)(email, otp);
+        return res.status(200).json({
+            success: true,
+            message: responseMessage_1.message.OTP.SEND
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.forgetPsw = forgetPsw;
+const resetPsw = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, otp, newPassword } = req.body;
+        const user = yield (0, verifyExists_1.verifyIfUserExists)(email);
+        if (!user)
+            throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_INPUT);
+        const otpEntry = yield dbConnection_1.prisma.oTP.findFirst({
+            where: {
+                userId: user.id,
+                expiresAt: {
+                    gt: new Date()
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+        if (!otpEntry)
+            throw new Error(responseMessage_1.message.ERROR.OTP.INVALIDE_INPUT);
+        const match = yield bcrypt_1.default.compare(otp, otpEntry.tokenHash);
+        if (!match)
+            throw new Error(responseMessage_1.message.ERROR.OTP.INVALIDE_INPUT);
+        const hashPsw = yield bcrypt_1.default.hash(newPassword, 10);
+        yield dbConnection_1.prisma.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                password: hashPsw
+            }
+        });
+        yield dbConnection_1.prisma.oTP.delete({
+            where: {
+                id: otpEntry.id
+            }
+        });
+        return res.status(201).json({
+            success: true,
+            message: responseMessage_1.message.ERROR.PASSWORD.UPDATE
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.resetPsw = resetPsw;

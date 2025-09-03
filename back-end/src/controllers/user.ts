@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createUserLeave } from "../lib/userLeave";
 import { toDataUri } from "../lib/util";
+import { generateOtp, sendOtpEmail } from "../lib/auth";
 
 dotenv.config();
 
@@ -202,3 +203,91 @@ export const logout = async (req: Request, res: Response) => {
   })
 }
 
+export const forgetPsw = async (req:Request, res:Response) => {
+  try {
+    const { email } = req.body
+    if(!email) throw new Error(message.ERROR.NOT_FOUND)
+
+      const user = await verifyIfUserExists(email)
+      if(!user) throw new Error(message.ERROR.USER.NOT_FOUND)
+
+      const otp = await generateOtp()
+      const tokenHash = await bcrypt.hash(otp.toString(), 10)
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 min
+
+      await prisma.oTP.create({
+        data:{
+          userId: user.id,
+          tokenHash,
+          expiresAt
+        }
+      })
+
+      await sendOtpEmail(email, otp)
+
+      return res.status(200).json({
+        success: true,
+        message:message.OTP.SEND
+      })
+
+  } catch (error:any) {
+    return res.status(500).json({
+      message: message.ERROR.SERVER, 
+      error: error.message
+    })
+  }
+}
+
+export const resetPsw = async (req: Request, res:Response) => {
+  try {
+    const { email, otp, newPassword } = req.body
+    
+    const user = await verifyIfUserExists(email)
+    if(!user) throw new Error(message.ERROR.USER.INVALIDE_INPUT)
+
+      const otpEntry = await prisma.oTP.findFirst({
+        where :{
+          userId: user.id,
+          expiresAt: {
+            gt : new Date()
+          }
+        },
+        orderBy:{
+          createdAt: 'desc'
+        }
+      })
+
+      if(!otpEntry) throw new Error(message.ERROR.OTP.INVALIDE_INPUT)
+
+      const match = await bcrypt.compare(otp, otpEntry.tokenHash)
+      if(!match) throw new Error(message.ERROR.OTP.INVALIDE_INPUT)
+
+      const hashPsw = await bcrypt.hash(newPassword, 10)
+
+      await prisma.user.update({
+        where: {
+          id: user.id
+        },
+        data:{
+          password: hashPsw
+        }
+      })
+
+      await prisma.oTP.delete({
+        where:{
+          id: otpEntry.id
+        }
+      })
+
+      return res.status(201).json({
+        success:true,
+        message:message.ERROR.PASSWORD.UPDATE
+      })
+
+  } catch (error:any) {
+    return res.status(500).json({
+      message: message.ERROR.SERVER, 
+      error: error.message
+    })
+  }
+}
