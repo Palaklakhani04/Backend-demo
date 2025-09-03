@@ -78,7 +78,7 @@ export default function EditUserPage() {
             grNumber: userData.grNumber || "",
             phone: userData.phone || "",
             address: userData.address || "",
-            className: userData.className || "",
+            class: userData.class || "",
             roleId: userData.roleId || 4,
           }}
           validationSchema={RegisterSchema}
@@ -91,7 +91,7 @@ export default function EditUserPage() {
           <TextInput name="grNumber" label="GR Number" placeholder="GR Number" type="text" />
           <TextInput name="phone" label="Phone" placeholder="Phone" type="text" />
           <TextInput name="address" label="Address" placeholder="Address" type="text" />
-          <TextInput name="className" label="Class" placeholder="Class (e.g. A)" type="text" />
+          <TextInput name="class" label="Class" placeholder="Class (e.g. A)" type="text" />
 
           <Button type="submit" disabled={loading}>
             {loading ? "Updating..." : "Update User"}

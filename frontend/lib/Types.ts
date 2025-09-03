@@ -141,7 +141,7 @@ export type UserType = {
     grNumber: string;
     phone: string;
     address:string;
-    className?: string;
+    class?: string;
     roleId?: number;
 }
 

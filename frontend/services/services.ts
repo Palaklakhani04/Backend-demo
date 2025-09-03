@@ -122,7 +122,7 @@ export const updateUser = async (id: string, values: UserType) => {
                 gender: values.gender,
                 grNumber: values.grNumber,
                 department: values.department,
-                className: values.className,
+                className: values.class,
                 address: values.address,
                 phone: values.phone,
                 roleId: values.roleId
