@@ -43,20 +43,14 @@ const Sidebar = () => {
 
   const toggleMenu = (menu: string) => {
     switch (menu) {
-      case "leave":
-        setIsLeaveMenuOpen(!isLeaveMenuOpen);
-        break;
       case "student":
         setIsStudentMenuOpen(!isStudentMenuOpen);
         break;
-      case "staff":
+      case "faculty":
         setIsStaffMenuOpen(!isStaffMenuOpen);
         break;
       case "hod":
         setIsHodMenuOpen(!isHodMenuOpen);
-        break;
-      case "adminLeave":
-        setIsAdminLeaveMenuOpen(!isAdminLeaveMenuOpen);
         break;
     }
   };
@@ -148,7 +142,7 @@ const Sidebar = () => {
             <SidebarMenu
               isOpen={isOpen}
               isMenuOpen={isStaffMenuOpen}
-              toggleMenu={() => toggleMenu("staff")}
+              toggleMenu={() => toggleMenu("faculty")}
               icon={<FaUsersCog />}
               label="Manage Faculty"
               items={[

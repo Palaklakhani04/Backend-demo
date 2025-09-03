@@ -58,10 +58,9 @@ export const changeProfileImage = async (file: any) => {
   return response
 }
 
-// Replace this with your actual API call
 export const addUsers = async (values: register, roleId: string) => {
   try {
-    // Example of file handling using FormData
+
     const formData = new FormData();
     
     formData.append("name", values.name.trim());

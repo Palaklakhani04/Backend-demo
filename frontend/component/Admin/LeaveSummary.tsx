@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@mui/material";
@@ -54,7 +54,7 @@ export default function LeaveSummaryPage() {
         <h1 className="text-2xl font-extrabold text-gray-900">Leave Summary</h1>
       </div>
 
-      {/* Loading / Error / Data */}
+      {/* Loading */}
       {loading && (
         <p className="text-center text-gray-500">Loading...</p>
       )}

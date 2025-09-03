@@ -9,13 +9,13 @@ export default function Page() {
   return (
     <div className='grid place-items-center  min-h-dvh justify-center'>
       <div className='w-full text-center justify-center '>
-        <h1 className='tex-xl text-gray-700 font-bold'>HOD And Faculty dashboard</h1>
+        <h1 className='text-2xl text-gray-700 font-bold'>HOD And Faculty dashboard</h1>
         <Card
           title="Update Leave Request Status"
           subtitle="Leave Request Status"
-          className="m-2 text-gray-700"
+          className="mt-8 text-gray-700"
         >
-          <div className="w-40">
+          <div className="p-4 ">
             <Button
               type="submit"
               onClick={() => router.push("/dashboard/hod/updatestatus")}
