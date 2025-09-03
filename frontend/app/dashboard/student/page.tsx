@@ -11,7 +11,7 @@ export default function page() {
     <>
     <div className="grid items-center min-h-dvh justify-center">
       <div className="">
-      <h1 className="text-3xl text-center m-8">Student Dashboard</h1>
+      <h1 className="text-3xl text-gray-700 font-bold text-center m-8">Student Dashboard</h1>
         <div className="flex">
           <Card
             title="Apply Leave Request"

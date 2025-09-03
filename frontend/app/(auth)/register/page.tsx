@@ -94,7 +94,7 @@ const RegisterForm = () => {
             type="text"
           />
           <TextInput
-            name="class"
+            name="className"
             label="class Name"
             placeholder="Your ClassName Ex-A"
             type="text"

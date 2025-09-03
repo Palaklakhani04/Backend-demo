@@ -18,7 +18,7 @@ export const registerStudent = async (
     formData.append("department", valuse.department.trim());
     formData.append("phone", valuse.phone.trim());
     formData.append("address", valuse.address.trim());
-    formData.append("class", valuse.class.trim());
+    formData.append("className", valuse.class.trim());
     formData.append("roleId", roleId );
     if(valuse.image){
       formData.append("image", valuse.image, valuse.image.name);

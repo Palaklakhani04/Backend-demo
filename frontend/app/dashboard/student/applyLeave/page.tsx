@@ -36,7 +36,7 @@ export default function page() {
     <>
       <div className="min-h-dvh grid place-items-center p-6 bg-gradient-to-br from-indigo-50 via-white to-emerald-50">
         <div className="w-full mt-6 max-w-md rounded-2xl border shadow-xl border-gray-200 bg-white p-6 ">
-          <h1 className="mb-4 text-2xl font-semibold">Student Apply Leave</h1>
+          <h1 className="mb-4 text-2xl text-gray-700 font-semibold">Student Apply Leave</h1>
           <ApplyLeaveForm approverOption={faculty} />
         </div>
       </div>
