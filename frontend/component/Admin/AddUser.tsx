@@ -125,7 +125,7 @@ export default function AddUser({ roleId }: AddUserProps) {
           <TextInput
             name="grNumber"
             label="GR Number"
-            placeholder="Student GR Number"
+            placeholder="GR Number"
             type="text"
           />
           <TextInput

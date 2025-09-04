@@ -157,7 +157,7 @@ export const otpSend = async (values: forgetPswType) => {
     if(res.data.success === true)
       return res
   } catch (error:any) {
-    throw new Error(error.data.message)
+    throw new Error(error.response.data.error)
   }
 }
 
