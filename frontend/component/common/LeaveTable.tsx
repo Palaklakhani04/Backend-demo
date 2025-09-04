@@ -40,8 +40,8 @@ export default function LeaveTable({ data }: Props) {
   };
 
   return (
-    <div className="grid place-items-center p-4 bg-gray-50">
-      <div className="w-full max-w-4xl">
+    <div className=" p-4 bg-gray-50">
+      <div className="w-full ">
         <h1 className="text-xl font-bold text-center mb-4">Student Leave Report</h1>
         <TableContainer component={Paper}>
           <Table>

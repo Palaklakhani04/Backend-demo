@@ -238,6 +238,7 @@ export const forgetPsw = async (req:Request, res:Response) => {
   }
 }
 
+
 export const resetPsw = async (req: Request, res:Response) => {
   try {
     const { email, otp, newPassword } = req.body

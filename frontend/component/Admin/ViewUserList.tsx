@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -19,15 +20,15 @@ type Props = {
   userData: UserTypeData[];
 };
 
-export default function ViewUserList({ userData}: Props) {
-  const [page, setPage] = useState(0); // current page index
-  const [rowsPerPage, setRowsPerPage] = useState(5); // default rows per page
-  const router = useRouter()
+export default function ViewUserList({ userData }: Props) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const router = useRouter();
 
   const handleEdit = (id: string) => {
-    router.push(`/dashboard/editprofile/${id}`)
-  }
-  // Slice data for current page
+    router.push(`/dashboard/editprofile/${id}`);
+  };
+
   const paginatedData = userData.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
@@ -41,7 +42,7 @@ export default function ViewUserList({ userData}: Props) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to first page
+    setPage(0);
   };
 
   const getTitle = () => {
@@ -53,44 +54,107 @@ export default function ViewUserList({ userData}: Props) {
   };
 
   return (
-    <div className="grid place-items-center justify-center min-h-dvh">
-      <div className="w-full max-w-6xl">
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-8">
+    <div className="flex place-items-center justify-center min-h-dvh">
+      <div className="w-full px-8 ">
+        <h1 className="text-2xl px-4 font-semibold  text-slate-700 mb-8">
           {getTitle()}
         </h1>
 
-        <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
-          <Table sx={{ minWidth: 650 }} aria-label="user table">
+        <TableContainer
+          component={Paper}
+          sx={{
+            borderRadius: 3,
+            boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+            overflow: "hidden",
+          }}
+        >
+          <Table aria-label="user table">
+            {/* Table Head */}
             <TableHead>
-              <TableRow>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Email</TableCell>
-                <TableCell align="center">Gender</TableCell>
-                <TableCell align="center">GR Number</TableCell>
-                <TableCell align="center">Department</TableCell>
-                <TableCell align="center">Class</TableCell>
-                <TableCell align="center">Role ID</TableCell>
+              <TableRow
+                sx={{
+                  background: "linear-gradient(90deg, #f8fafc, #f1f5f9)",
+                }}
+              >
+                <TableCell align="left" sx={{ fontWeight: "600" }}>
+                  Name
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "600" }}>
+                  Email
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "600" }}>
+                  Gender
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "600" }}>
+                  GR Number
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "600" }}>
+                  Department
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "600" }}>
+                  Class
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "600" }}>
+                  Role ID
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: "600" }}>
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
 
+            {/* Table Body */}
             <TableBody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((user, index) => (
-                  <TableRow key={index}>
-                    <TableCell align="center">{user.name}</TableCell>
+                  <TableRow
+                    key={index}
+                    sx={{
+                      "&:nth-of-type(odd)": { backgroundColor: "#f9fafb" },
+                      "&:hover": { backgroundColor: "#f1f5f9" },
+                      transition: "background 0.3s",
+                    }}
+                  >
+                    <TableCell align="left">{user.name}</TableCell>
                     <TableCell align="center">{user.email}</TableCell>
                     <TableCell align="center">{user.gender}</TableCell>
                     <TableCell align="center">{user.grNumber}</TableCell>
                     <TableCell align="center">{user.department}</TableCell>
                     <TableCell align="center">{user.class}</TableCell>
                     <TableCell align="center">{user.roleId}</TableCell>
-                    <TableCell><Button onClick={()=> handleEdit(user.id!)}>Edit</Button></TableCell>
+                    <TableCell align="center">
+                      <Button
+                        onClick={() => handleEdit(user.id!)}
+                        className="px-4 py-1 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={7} align="center">
-                    No data available
+                  <TableCell colSpan={8} align="center" sx={{ py: 6 }}>
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-3">
+                        <svg
+                          className="w-6 h-6 text-slate-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M9 13h6m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-slate-600 font-medium">
+                        No data available
+                      </p>
+                    </div>
                   </TableCell>
                 </TableRow>
               )}
