@@ -2,7 +2,7 @@
 import Button from '@/component/common/Button'
 import GenericForm from '@/component/common/GenericForm'
 import TextInput from '@/component/common/TextInput'
-import { LoginInitialValues, LoginVlaues, resetPswInit, resetPswType } from '@/lib/Types'
+import { resetPswInit, resetPswType } from '@/lib/Types'
 import { loginSchema } from '@/lib/Validation'
 import { resetPsw } from '@/services/services'
 import Link from 'next/link'
@@ -10,19 +10,17 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import toast from 'react-hot-toast'
 
-export default function Login() {
+export default function Reset() {
     const router = useRouter()
     const onsubmit =async ( valuse: resetPswType ) => {
         try {
             const data = await resetPsw(valuse)
-            if(data?.data.success === true){
-                toast.success(data.data.message)
+            console.log(data)
+            if(data?.success === true){
+                toast.success(data.message)
                 router.push("/login")
-            }else{
-                toast.error(data?.data.message)
             }
         } catch (error:any) {
-            console.log(error)
             toast.error(error.message)
         }
     }

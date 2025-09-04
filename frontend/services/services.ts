@@ -164,16 +164,16 @@ export const otpSend = async (values: forgetPswType) => {
 
 export const resetPsw = async (values:resetPswType) => {
   try {
-    const res = await api.post("/users/reset", 
+    const {data} = await api.post("/users/reset", 
       {
         email: values.email.trim(),
         otp: values.otp.trim(),
         newPassword: values.newPassword.trim()
       }
     )
-    if(res.data.success === true)
-      return res
+    if(data.success === true)
+      return data
   } catch (error:any) {
-    throw new Error(error.data.message)
+    throw new Error(error.response.data.error)
   }
 }
