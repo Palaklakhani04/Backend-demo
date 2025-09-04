@@ -36,3 +36,10 @@ export const LeaveSchema = Yup.object().shape({
   reason: Yup.string().required(),
   leaveType: Yup.string().oneOf(['firstHalf','secondHalf','fullDay']).required(),
 })
+
+
+export const ResetSchema = Yup.object().shape({
+  email: Yup.string().email().required(),
+  otp: Yup.string().min(6).max(6).required(),
+  newPassword: Yup.string().min(6).required(),
+})

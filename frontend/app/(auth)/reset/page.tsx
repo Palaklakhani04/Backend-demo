@@ -3,7 +3,7 @@ import Button from '@/component/common/Button'
 import GenericForm from '@/component/common/GenericForm'
 import TextInput from '@/component/common/TextInput'
 import { resetPswInit, resetPswType } from '@/lib/Types'
-import { loginSchema } from '@/lib/Validation'
+import { ResetSchema } from '@/lib/Validation'
 import { resetPsw } from '@/services/services'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -30,7 +30,7 @@ export default function Reset() {
         <h1 className='mb-4 text-xl text-gray-700 text-center font-semibold'>Reset Password</h1>
         <GenericForm<resetPswType>
             initialValues={resetPswInit}
-            validationSchema={loginSchema}
+            validationSchema={ResetSchema}
             onSubmit={onsubmit}
         >
             <TextInput name="email" type="email" label="Email" placeholder="Your Email"/>
