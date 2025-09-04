@@ -5,19 +5,14 @@ import Link from "next/link";
 import {
   FaBars,
   FaTachometerAlt,
-  FaBriefcase,
   FaChevronDown,
   FaChevronUp,
-  FaFileAlt,
-  FaEye,
-  FaBalanceScale,
   FaUserCog,
   FaUserPlus,
   FaList,
   FaUserTie,
   FaUsersCog,
   FaCalendarAlt,
-  FaRegClock,
 } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 

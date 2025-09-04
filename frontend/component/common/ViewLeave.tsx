@@ -67,7 +67,6 @@ export default function ViewLeave({
           </div>
         </div>
 
-        {/* Conditional rendering */}
         {filtered.length === 0 ? (
           <TableContainer sx={{ margin: 4 }}>
             <Table sx={{ minWidth: 650, border: 2 }}>
@@ -116,8 +115,8 @@ export default function ViewLeave({
             <Table sx={{ minWidth: 650, border: 2 }} aria-label="simple table">
               <TableHead sx={{ border: 2 }}>
                 <TableRow>
-                  <TableCell align="center">Date</TableCell>
                   <TableCell align="center">Type</TableCell>
+                  <TableCell align="center">Date</TableCell>
                   <TableCell align="center">Reason</TableCell>
                   <TableCell align="center">Status</TableCell>
                 </TableRow>
