@@ -183,3 +183,4 @@ export const getFacultyLeaveBalance = async (req:Request, res:Response) => {
         })
     }
 }
+

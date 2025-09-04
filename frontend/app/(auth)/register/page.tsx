@@ -1,10 +1,13 @@
 "use client";
-import { Formik, Field, ErrorMessage } from "formik";
-import { TextField,  Box, Typography } from "@mui/material";
-import { RadioOptions, RegisterInitalValue, type register } from "@/lib/Types";
+import {
+  RadioOptions,
+  RegisterInitalValue,
+  SelectOptions,
+  type register,
+} from "@/lib/Types";
 import { RegisterSchema } from "@/lib/Validation";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { registerStudent } from "@/services/auth";
 import GenericForm from "@/component/common/GenericForm";
@@ -14,11 +17,28 @@ import Select from "@/component/common/Select";
 import FileInput from "@/component/common/FileInput";
 import Button from "@/component/common/Button";
 import Link from "next/link";
-
+import { getDepartment } from "@/services/services";
 
 const RegisterForm = () => {
-   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [deptOption, setDeptOption] = useState<SelectOptions>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    async function getAlldepartment() {
+      try {
+        const data = await getDepartment();
+        const options = data.department.map((dep: any) => ({
+          value: dep.department,
+          label: dep.department,
+        }));
+        setDeptOption(options);
+      } catch (err) {
+        toast.error("Failed to fetch departments");
+      }
+    }
+    getAlldepartment();
+  }, []);
 
   const onSubmit = async (valuse: register) => {
     try {
@@ -30,7 +50,7 @@ const RegisterForm = () => {
         toast.error(registerData);
       }
     } catch (e: any) {
-      toast.error(e.message)
+      toast.error(e.message);
     }
   };
 
@@ -38,11 +58,6 @@ const RegisterForm = () => {
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
     { value: "Others", label: "Others" },
-  ];
-
-  const departmentOptions: RadioOptions = [
-    { value: "computer", label: "Computer" },
-    { value: "BCA", label: "BCA" },
   ];
 
   return (
@@ -73,8 +88,8 @@ const RegisterForm = () => {
             type="password"
           />
           <RadioGroup name="gender" label="Gender" options={genderOptions} />
-          <FileInput name="image" label="Image"/>
-          <Select name="department" label="Department" options={departmentOptions}/>
+          <FileInput name="image" label="Image" />
+          <Select name="department" label="Department" options={deptOption} />
           <TextInput
             name="grNumber"
             label="GrNumber"
@@ -94,7 +109,7 @@ const RegisterForm = () => {
             type="text"
           />
           <TextInput
-            name="className"
+            name="class"
             label="class Name"
             placeholder="Your ClassName Ex-A"
             type="text"
@@ -105,7 +120,10 @@ const RegisterForm = () => {
           </Button>
         </GenericForm>
         <p className="mt-3 text-center text-sm text-gray-600">
-            Already have an account? <Link className="underline" href="/login">Sign in</Link>
+          Already have an account?{" "}
+          <Link className="underline" href="/login">
+            Sign in
+          </Link>
         </p>
       </div>
     </div>

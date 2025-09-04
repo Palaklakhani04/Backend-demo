@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,13 +7,9 @@ import GenericForm from "@/component/common/GenericForm";
 import RadioGroup from "@/component/common/Radio";
 import Select from "@/component/common/Select";
 import TextInput from "@/component/common/TextInput";
-import {
-  ProfileDetailsType,
-  ProfileInitalValue,
-  RadioOptions,
-} from "@/lib/Types";
+import { ProfileDetailsType, RadioOptions, SelectOptions } from "@/lib/Types";
 import { RegisterSchema } from "@/lib/Validation";
-import { api } from "@/services/services";
+import { api, getDepartment } from "@/services/services";
 import { FormikHelpers } from "formik";
 import { useRouter } from "next/navigation";
 
@@ -24,17 +19,29 @@ const genderOptions: RadioOptions = [
   { value: "Others", label: "Others" },
 ];
 
-const departmentOptions: RadioOptions = [
-  { value: "computer", label: "Computer" },
-  { value: "BCA", label: "BCA" },
-];
-
 export default function EditProfileDetail() {
   const router = useRouter();
   const [initialValues, setInitialValues] = useState<ProfileDetailsType | null>(
     null
   );
   const [loading, setLoading] = useState(true);
+  const [deptOption, setDeptOption] = useState<SelectOptions>([]);
+
+  useEffect(() => {
+    async function getAlldepartment() {
+      try {
+        const data = await getDepartment();
+        const options = data.department.map((dep: any) => ({
+          value: dep.department,
+          label: dep.department,
+        }));
+        setDeptOption(options);
+      } catch (err) {
+        toast.error("Failed to fetch departments");
+      }
+    }
+    getAlldepartment();
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -139,11 +146,7 @@ export default function EditProfileDetail() {
             type="email"
           />
           <RadioGroup name="gender" label="Gender" options={genderOptions} />
-          <Select
-            name="department"
-            label="Department"
-            options={departmentOptions}
-          />
+          <Select name="department" label="Department" options={deptOption} />
           <TextInput
             name="grNumber"
             label="Gr Number"

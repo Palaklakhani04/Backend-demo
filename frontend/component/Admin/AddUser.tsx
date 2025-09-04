@@ -1,37 +1,49 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GenericForm from "../common/GenericForm";
 import TextInput from "../common/TextInput";
 import RadioGroup from "../common/Radio";
 import FileInput from "../common/FileInput";
 import Select from "../common/Select";
 import Button from "../common/Button";
-import { RadioOptions, register, RegisterInitalValue } from "@/lib/Types";
+import { RadioOptions, register, RegisterInitalValue, SelectOptions } from "@/lib/Types";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { FormikHelpers } from "formik";
 import { RegisterSchema } from "@/lib/Validation";
-import { addUsers } from "@/services/services";
+import { addUsers, getDepartment } from "@/services/services";
 
 type AddUserProps = {
   roleId: string;
-  department?:string
 };
 
-export default function AddUser({ roleId , department }: AddUserProps) {
+export default function AddUser({ roleId }: AddUserProps) {
   const [loading, setLoading] = useState(false);
+  const [deptOption , setDeptOption] = useState<SelectOptions>([])
+  
   const router = useRouter();
+
+   useEffect(() => {
+    async function getAlldepartment() {
+      try {
+        const data = await getDepartment();
+        const options = data.department.map((dep: any) => ({
+          value: dep.department,
+          label: dep.department,
+        }));
+        setDeptOption(options);
+      } catch (err) {
+        toast.error("Failed to fetch departments");
+      }
+    }
+    getAlldepartment();
+  }, []);
 
   const genderOptions: RadioOptions = [
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
     { value: "Others", label: "Others" },
-  ];
-
-  const departmentOptions: RadioOptions = [
-    { value: "computer", label: "Computer" },
-    { value: "BCA", label: "BCA" },
   ];
 
   const handleSubmit = async (
@@ -42,7 +54,6 @@ export default function AddUser({ roleId , department }: AddUserProps) {
       setLoading(true);
       const submissionData = {
         ...values,
-        department: department || values.department,
       };
       const data = await addUsers(submissionData, roleId);
       if (data.success) {
@@ -108,7 +119,7 @@ export default function AddUser({ roleId , department }: AddUserProps) {
           (<Select
             name="department"
             label="Department"
-            options={departmentOptions}
+            options={deptOption}
           />)
         }
           <TextInput

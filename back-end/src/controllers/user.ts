@@ -291,3 +291,31 @@ export const resetPsw = async (req: Request, res:Response) => {
     })
   }
 }
+
+
+
+export const getDepartment = async (req:Request, res:Response) => {
+  try {
+    const department = await prisma.user.findMany({
+      where:{
+        roleId: 2
+      },
+      select:{
+        department:true
+      }
+    })
+    console.log(department)
+
+    return res.status(200).json({
+      success: true,
+      department,
+      message:message.FETCHED
+    })
+
+  } catch (error:any) {
+    return res.status(500).json({
+      message: message.ERROR.SERVER, 
+      error: error.message
+    })
+  }
+}

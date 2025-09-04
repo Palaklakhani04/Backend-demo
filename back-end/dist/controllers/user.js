@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPsw = exports.forgetPsw = exports.logout = exports.updateProfileImage = exports.updateUserDetail = exports.userLogin = exports.userRegister = void 0;
+exports.getDepartment = exports.resetPsw = exports.forgetPsw = exports.logout = exports.updateProfileImage = exports.updateUserDetail = exports.userLogin = exports.userRegister = void 0;
 const validation_1 = require("../lib/validation");
 const responseMessage_1 = require("../lib/responseMessage");
 const dbConnection_1 = require("../config/dbConnection");
@@ -268,3 +268,28 @@ const resetPsw = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.resetPsw = resetPsw;
+const getDepartment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const department = yield dbConnection_1.prisma.user.findMany({
+            where: {
+                roleId: 2
+            },
+            select: {
+                department: true
+            }
+        });
+        console.log(department);
+        return res.status(200).json({
+            success: true,
+            department,
+            message: responseMessage_1.message.FETCHED
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: responseMessage_1.message.ERROR.SERVER,
+            error: error.message
+        });
+    }
+});
+exports.getDepartment = getDepartment;

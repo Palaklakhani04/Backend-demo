@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { UserType } from "@/lib/Types";
+import { SelectOptions, UserType } from "@/lib/Types";
 import { RegisterSchema } from "@/lib/Validation";
 import toast from "react-hot-toast";
 import GenericForm from "@/component/common/GenericForm";
@@ -10,7 +10,7 @@ import TextInput from "@/component/common/TextInput";
 import RadioGroup from "@/component/common/Radio";
 import Select from "@/component/common/Select";
 import Button from "@/component/common/Button";
-import { getUserById, updateUser } from "@/services/services";
+import { getDepartment, getUserById, updateUser } from "@/services/services";
 
 const genderOptions = [
   { value: "Male", label: "Male" },
@@ -18,16 +18,28 @@ const genderOptions = [
   { value: "Others", label: "Others" },
 ];
 
-const departmentOptions = [
-  { value: "computer", label: "Computer" },
-  { value: "BCA", label: "BCA" },
-];
-
 export default function EditUserPage() {
   const { id } = useParams();
   const router = useRouter();
   const [userData, setUserData] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
+  const [deptOption, setDeptOption] = useState<SelectOptions>([]);
+
+  useEffect(() => {
+    async function getAlldepartment() {
+      try {
+        const data = await getDepartment();
+        const options = data.department.map((dep: any) => ({
+          value: dep.department,
+          label: dep.department,
+        }));
+        setDeptOption(options);
+      } catch (err) {
+        toast.error("Failed to fetch departments");
+      }
+    }
+    getAlldepartment();
+  }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -70,9 +82,7 @@ export default function EditUserPage() {
         <div className="flex justify-around my-4">
           <h1 className="text-2xl font-bold">Edit User</h1>
           <div className="w-30">
-            <Button onClick={() => router.back()}>
-              back
-            </Button>
+            <Button onClick={() => router.back()}>back</Button>
           </div>
         </div>
         <GenericForm<UserType>
@@ -98,11 +108,7 @@ export default function EditUserPage() {
             type="email"
           />
           <RadioGroup name="gender" label="Gender" options={genderOptions} />
-          <Select
-            name="department"
-            label="Department"
-            options={departmentOptions}
-          />
+          <Select name="department" label="Department" options={deptOption} />
           <TextInput
             name="grNumber"
             label="GR Number"

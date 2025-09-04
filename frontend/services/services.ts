@@ -177,3 +177,9 @@ export const resetPsw = async (values:resetPswType) => {
     throw new Error(error.response.data.error)
   }
 }
+
+export const getDepartment = async () => {
+  const {data} = await api.get("/users/department")
+  if(data.success === true)
+    return data
+}
