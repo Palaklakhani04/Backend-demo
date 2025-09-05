@@ -41,20 +41,16 @@ const getStudentDetail = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.getStudentDetail = getStudentDetail;
 const applyLeaveRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(req.body);
         const { error } = validation_1.leaveRequestSchema.validate(req.body);
-        console.log(error);
         if (error)
             throw new Error(responseMessage_1.message.ERROR.INVALIDE_INPUT);
         const { startDate, endDate, leaveType, status, reason, requestToId } = req.body;
-        console.log(req.body);
         const { userId } = req.user;
         const isExists = yield (0, verifyExists_1.verifyIfRequestIdExists)(requestToId);
         if (!isExists)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_USER);
         // verify if user has leave or not for leaveRequest
         const isLeave = yield (0, verifyExists_1.verifyAvailableDays)(startDate, endDate, userId);
-        console.log(isLeave);
         if (!isLeave)
             throw new Error(responseMessage_1.message.ERROR.LEAVE.USED);
         const leaveRequest = yield dbConnection_1.prisma.leaveRequest.create({
@@ -68,7 +64,6 @@ const applyLeaveRequest = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 requestToId
             }
         });
-        console.log(leaveRequest);
         if (!leaveRequest)
             throw new Error(responseMessage_1.message.ERROR.LEAVE.CREATED);
         return res.status(201).json({

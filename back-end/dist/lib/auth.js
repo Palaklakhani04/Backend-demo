@@ -37,10 +37,8 @@ const sendOtpEmail = (email, otp) => __awaiter(void 0, void 0, void 0, function*
     };
     try {
         yield tansporter_1.transpoter.sendMail(mailOptions);
-        console.log("otp send");
     }
     catch (error) {
-        console.log("fail to send otp", error);
         throw new Error(responseMessage_1.message.ERROR.OTP.SEND);
     }
 });

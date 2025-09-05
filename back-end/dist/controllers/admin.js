@@ -42,8 +42,6 @@ const getAllStudents = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllStudents = getAllStudents;
 const updateUserDetailById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(typeof (req.body.roleId));
-        console.log(req.body);
         const { error } = validation_1.updateUserSchema.validate(req.body);
         console.log(error);
         if (error)
@@ -67,7 +65,6 @@ const updateUserDetailById = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 class: className
             }
         });
-        console.log(updateUser);
         if (!updateUser)
             throw new Error(responseMessage_1.message.ERROR.NOT_FOUND);
         return res.status(201).json({

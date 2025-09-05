@@ -50,7 +50,6 @@ exports.getLeaveStatus = getLeaveStatus;
 const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        console.log(id);
         const { status } = req.body;
         const leaveData = yield dbConnection_1.prisma.leaveRequest.findFirst({
             where: {
@@ -61,18 +60,15 @@ const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 user: true
             }
         });
-        console.log(leaveData);
         const userData = yield dbConnection_1.prisma.userLeave.findFirst({
             where: {
                 userId: leaveData === null || leaveData === void 0 ? void 0 : leaveData.user.id
             }
         });
         const leaveDay = yield (0, verifyExists_1.Days)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate);
-        console.log(leaveDay);
         const isLeave = yield (0, verifyExists_1.verifyAvailableDays)(leaveData === null || leaveData === void 0 ? void 0 : leaveData.startDate, leaveData === null || leaveData === void 0 ? void 0 : leaveData.endDate, userData === null || userData === void 0 ? void 0 : userData.userId);
         if (!isLeave)
             throw new Error(responseMessage_1.message.ERROR.LEAVE.USED);
-        console.log(isLeave);
         if (status === "Approved") {
             const isApproved = yield dbConnection_1.prisma.leaveRequest.update({
                 where: {
@@ -82,7 +78,6 @@ const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, functi
                     status
                 }
             });
-            console.log(isApproved);
             if (isApproved) {
                 yield (0, userLeave_1.updateUserLeaveData)(userData === null || userData === void 0 ? void 0 : userData.availableLeave, userData === null || userData === void 0 ? void 0 : userData.usedLeave, leaveDay, userData === null || userData === void 0 ? void 0 : userData.id, userData === null || userData === void 0 ? void 0 : userData.totalWorkingDays);
             }
@@ -99,7 +94,6 @@ const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, functi
                     status
                 }
             });
-            console.log(isRejected);
             if (!isRejected)
                 throw new Error(responseMessage_1.message.ERROR.UPDATED);
         }
@@ -112,7 +106,6 @@ const updateLeaveStatus = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     catch (error) {
-        console.log(error);
         return res.status(500).json({
             message: responseMessage_1.message.ERROR.SERVER,
             error: error.message

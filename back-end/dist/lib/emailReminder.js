@@ -59,7 +59,6 @@ const getPendingRequest = () => __awaiter(void 0, void 0, void 0, function* () {
 exports.getPendingRequest = getPendingRequest;
 const sendMail = () => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield (0, exports.getPendingRequest)();
-    console.log(user);
     user.forEach((element) => __awaiter(void 0, void 0, void 0, function* () {
         yield sendReminderEmail(element.name, element.email);
     }));

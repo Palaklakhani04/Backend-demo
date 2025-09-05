@@ -27,9 +27,7 @@ dotenv_1.default.config();
 const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        console.log(req.body);
         const { error } = validation_1.signUpSchema.validate(req.body);
-        console.log(error);
         if (error)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_INPUT);
         const { name, email, password, gender, phone, address, grNumber, department, roleId, className, } = req.body;
@@ -57,7 +55,6 @@ const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        console.log(error);
         return res.status(500).json({
             message: responseMessage_1.message.ERROR.SERVER,
             error: error.message,
@@ -67,9 +64,7 @@ const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.userRegister = userRegister;
 const userLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(req.body);
         const { error } = validation_1.loginSchema.validate(req.body);
-        console.log(error);
         if (error)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_INPUT);
         const { email, password } = req.body;
@@ -110,7 +105,6 @@ exports.userLogin = userLogin;
 const updateUserDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { error } = validation_1.updateUserSchema.validate(req.body);
-        console.log(error);
         if (error)
             throw new Error(responseMessage_1.message.ERROR.USER.INVALIDE_INPUT);
         const { name, email, gender, phone, address, grNumber, department, roleId, className } = req.body;
@@ -278,7 +272,6 @@ const getDepartment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 department: true
             }
         });
-        console.log(department);
         return res.status(200).json({
             success: true,
             department,

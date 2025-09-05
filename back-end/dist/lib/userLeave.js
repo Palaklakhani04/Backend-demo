@@ -13,7 +13,7 @@ exports.updateUserLeaveData = exports.createUserLeave = void 0;
 const dbConnection_1 = require("../config/dbConnection");
 const createUserLeave = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const academicYear = new Date().getFullYear();
-    const userLeave = yield dbConnection_1.prisma.userLeave.create({
+    yield dbConnection_1.prisma.userLeave.create({
         data: {
             userId: id,
             totalLeave: 12,
@@ -31,7 +31,7 @@ const updateUserLeaveData = (availableLeave, usedLeave, leaveDay, id, totalWorki
         const usedLeaveData = usedLeave + 1;
         const availableLeaveData = availableLeave - 1;
         const attendancePercentageData = (((totalWorkingDays - usedLeaveData) / totalWorkingDays) * 100).toFixed(2);
-        const userLeave = yield dbConnection_1.prisma.userLeave.update({
+        yield dbConnection_1.prisma.userLeave.update({
             where: {
                 id: id
             },
@@ -46,7 +46,7 @@ const updateUserLeaveData = (availableLeave, usedLeave, leaveDay, id, totalWorki
         const usedLeaveData = usedLeave + leaveDay;
         const availableLeaveData = availableLeave - leaveDay;
         const attendancePercentageData = (((totalWorkingDays - usedLeaveData) / totalWorkingDays) * 100).toFixed(2);
-        const userLeave = yield dbConnection_1.prisma.userLeave.update({
+        yield dbConnection_1.prisma.userLeave.update({
             where: {
                 id: id
             },
@@ -59,37 +59,3 @@ const updateUserLeaveData = (availableLeave, usedLeave, leaveDay, id, totalWorki
     }
 });
 exports.updateUserLeaveData = updateUserLeaveData;
-// export const getUserLeaveData = async () => {
-//         const student = await prisma.user.findMany({
-//            where: {
-//              roleId: 4
-//            },
-//            include: {
-//              leaveRequest:true
-//            }
-//         })
-//         const faculty = await prisma.user.findMany({
-//             where: {
-//                 roleId: 3
-//             },
-//             include: {
-//              leaveRequest:true
-//            }
-//         })
-//         const hod = await prisma.user.findMany({
-//             include:{
-//                 leaveRequest: {
-//                     select: {
-//                         userId : true
-//                     }
-//                 }
-//             }
-//         })
-//         console.log(hod)
-//         const leaveDataOfUser = {
-//             HodLeaveCount: hod.length ,
-//             FacultyLeaveCount: faculty.length,
-//             StudentLeaveCount: student.length
-//         }
-//         return leaveDataOfUser
-// }
