@@ -34,8 +34,6 @@ export const getAllStudents = async (req:Request, res:Response) => {
 
 export const updateUserDetailById = async (req:Request, res:Response) => {
     try {
-        console.log(typeof(req.body.roleId))
-        console.log(req.body)
         const { error } = updateUserSchema.validate(req.body)
         console.log(error)
         if(error) throw new Error(message.ERROR.USER.INVALIDE_INPUT)
@@ -62,7 +60,7 @@ export const updateUserDetailById = async (req:Request, res:Response) => {
                 class: className  
             }
         })
-        console.log(updateUser)
+
         if(!updateUser) throw new Error(message.ERROR.NOT_FOUND)
 
         return res.status(201).json({

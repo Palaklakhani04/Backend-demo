@@ -15,9 +15,8 @@ dotenv.config();
 
 export const userRegister = async (req: Request, res: Response) => {
   try {
-console.log(req.body)
+
     const { error } = signUpSchema.validate(req.body);
-    console.log(error)
     if (error) throw new Error(message.ERROR.USER.INVALIDE_INPUT);
 
     const {
@@ -60,7 +59,6 @@ console.log(req.body)
     });
 
   } catch (error: any) {
-    console.log(error);
     return res.status(500).json({
       message: message.ERROR.SERVER,
       error: error.message,
@@ -70,9 +68,8 @@ console.log(req.body)
 
 export const userLogin = async (req: Request, res: Response) => {
   try {
-    console.log(req.body)
+
     const { error } = loginSchema.validate(req.body);
-    console.log(error)
     if (error) throw new Error(message.ERROR.USER.INVALIDE_INPUT);
 
     const { email, password } = req.body;
@@ -118,7 +115,6 @@ export const userLogin = async (req: Request, res: Response) => {
 export const updateUserDetail = async (req:Request, res:Response) => {
     try {
         const { error } = updateUserSchema.validate(req.body)
-        console.log(error)
         if(error) throw new Error(message.ERROR.USER.INVALIDE_INPUT)
 
         const {name, email, gender, phone, address , grNumber, department, roleId , className } = req.body as userRegisterType
@@ -305,7 +301,6 @@ export const getDepartment = async (req:Request, res:Response) => {
         department:true
       }
     })
-    console.log(department)
 
     return res.status(200).json({
       success: true,

@@ -33,9 +33,7 @@ export const sendOtpEmail = async (email: string, otp: number) => {
 
     try {
         await transpoter.sendMail(mailOptions)
-        console.log("otp send")
     } catch (error:any) {
-        console.log("fail to send otp" ,error)
         throw new Error(message.ERROR.OTP.SEND)
     }
 }

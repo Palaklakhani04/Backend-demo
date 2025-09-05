@@ -24,7 +24,6 @@ const LeaveTypeOptions: options[] = [
 
 export default function ApplyLeaveForm({
   approverOption,
-  initialValues,
   submitLabel = "submit Request",
 }: {
   approverOption: options[];

@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(authenticateUser);
 
 const corsOptions = {
-      origin: 'http://localhost:8000', // Allow requests only from this origin
+      origin: process.env.FRONTEND_PORT, // Allow requests only from this origin
       credentials: true 
     };
 

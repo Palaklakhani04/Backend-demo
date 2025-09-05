@@ -15,7 +15,6 @@ export default function Page() {
     async function fetchProfile() {
       try {
         const res = await api.get("/student");
-        console.log(res)
        
         if (!res?.data.student) {
           toast.error("Failed to load profile");

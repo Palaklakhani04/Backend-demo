@@ -10,7 +10,6 @@ export const api = axios.create({
 export const loginval = async (email: string, password: string) => {
   try {
     const { data } = await api.post("/users/signin", { email, password });
-    console.log(data);
     if (data.success) return data;
   } catch (error: any) {
     throw new Error(error.response.data.error);
@@ -28,11 +27,11 @@ export const studentApplyLeave = async (values: ApplyLeaveRequestType) => {
       reason: values.reason?.trim(),
       status: "Pending",
     });
-    console.log(data);
+ 
     if (data.success) return data;
 
   } catch (error: any) {
-    console.log(error)
+    throw new Error(error.data.error);
   }
 };
 
@@ -87,7 +86,6 @@ export const addUsers = async (values: register, roleId: string) => {
           "Content-Type": "multipart/form-data",
         },
       });
-    console.log(data)
    
     return data;
   } catch (error:any) {
@@ -98,19 +96,16 @@ export const addUsers = async (values: register, roleId: string) => {
 
 export const getAllStudent = async () => {
   const {data} = await api.get("/admin/students")
-  console.log(data)
   return data
 }
 
 export const getAllFaculty = async () => {
   const {data} = await api.get("/admin/faculty")
-  console.log(data)
   return data
 }
 
 export const getAllHod = async () => {
   const {data} = await api.get("/admin/hod")
-  console.log(data)
   return data
 }
 
@@ -129,7 +124,6 @@ export const updateUser = async (id: string, values: UserType) => {
               };
       
     const data = await api.put(`/admin/update/${id}`, payload)
-    console.log(data)
     return data
   } catch (error:any) {
     throw new Error(error.data.message)
@@ -139,7 +133,6 @@ export const updateUser = async (id: string, values: UserType) => {
 export const getUserById = async (id:string) => {
   const {data} = await api.get(`/admin/user/${id}`)
   if(data.success === true)
-    console.log(data)
     return data
 }
 

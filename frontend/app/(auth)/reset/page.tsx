@@ -15,7 +15,6 @@ export default function Reset() {
     const onsubmit =async ( valuse: resetPswType ) => {
         try {
             const data = await resetPsw(valuse)
-            console.log(data)
             if(data?.success === true){
                 toast.success(data.message)
                 router.push("/login")

@@ -3,7 +3,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { FiLogOut, FiUser } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
@@ -20,7 +19,6 @@ export default function Navbar() {
       router.push("/login");
     } catch (err) {
       toast.error("Logout failed");
-      console.error("Logout error:", err);
     }
   };
 

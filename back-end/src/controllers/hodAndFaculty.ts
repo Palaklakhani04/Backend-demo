@@ -44,7 +44,6 @@ export const getLeaveStatus = async (req:Request, res:Response) => {
 export const updateLeaveStatus = async (req:Request, res:Response) => {
     try {
         const { id } = req.params
-        console.log(id)
         const { status } = req.body
         
         const leaveData = await prisma.leaveRequest.findFirst({
@@ -56,7 +55,7 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
                 user: true
             }
         })
-        console.log(leaveData)
+     
         const userData = await prisma.userLeave.findFirst({
             where: {
                 userId: leaveData?.user.id
@@ -64,11 +63,11 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
         })
 
         const leaveDay = await Days(leaveData?.startDate as string, leaveData?.endDate as string)
-        console.log(leaveDay);
+        
 
         const isLeave = await verifyAvailableDays(leaveData?.startDate as string, leaveData?.endDate as string, userData?.userId as string)
         if(!isLeave) throw new Error(message.ERROR.LEAVE.USED)
-            console.log(isLeave)
+           
         if(status === "Approved"){
             const isApproved = await prisma.leaveRequest.update({
                 where:{
@@ -79,7 +78,7 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
                 }
             })
             
-            console.log(isApproved)
+            
             if(isApproved) {
                 await updateUserLeaveData( userData?.availableLeave as number, userData?.usedLeave as number ,leaveDay as number, userData?.id as number, userData?.totalWorkingDays as number)
             }else{
@@ -96,7 +95,7 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
                 }
             })
 
-            console.log(isRejected)
+          
             if(!isRejected) throw new Error(message.ERROR.UPDATED)
 
         }else{
@@ -109,7 +108,6 @@ export const updateLeaveStatus = async (req:Request, res:Response) => {
         })
 
     } catch (error:any) {
-        console.log(error)
         return res.status(500).json({
             message: message.ERROR.SERVER, 
             error: error.message

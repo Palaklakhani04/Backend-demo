@@ -34,13 +34,11 @@ export const getStudentDetail = async (req:Request, res:Response) => {
 
 export const applyLeaveRequest = async (req: Request, res: Response) => {
     try {
-        console.log(req.body);
+  
         const { error } = leaveRequestSchema.validate(req.body)
-        console.log(error)
         if(error) throw new Error(message.ERROR.INVALIDE_INPUT)
 
         const { startDate, endDate, leaveType, status, reason, requestToId } = req.body
-        console.log(req.body)
         const { userId } = (req as any).user
 
         const isExists = await verifyIfRequestIdExists(requestToId)
@@ -48,7 +46,6 @@ export const applyLeaveRequest = async (req: Request, res: Response) => {
 
         // verify if user has leave or not for leaveRequest
         const isLeave = await verifyAvailableDays(startDate, endDate,  userId)
-        console.log(isLeave)
         if(!isLeave) throw new Error(message.ERROR.LEAVE.USED)
 
         const leaveRequest = await prisma.leaveRequest.create({
@@ -62,7 +59,7 @@ export const applyLeaveRequest = async (req: Request, res: Response) => {
                 requestToId
             }
         })
-        console.log(leaveRequest)
+       
         if(!leaveRequest) throw new Error(message.ERROR.LEAVE.CREATED)
         
         return res.status(201).json({

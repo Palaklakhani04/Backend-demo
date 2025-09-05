@@ -22,7 +22,6 @@ export default function Login() {
                 toast.error(data?.data.message)
             }
         } catch (error:any) {
-            console.log(error)
             toast.error(error.message)
         }
     }

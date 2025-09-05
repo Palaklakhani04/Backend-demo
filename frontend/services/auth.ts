@@ -40,7 +40,6 @@ export const registerStudent = async (
       return data
     }
   } catch (error: any) {
-    console.log(error)
     return error.response.data.error
   }
 };

@@ -48,8 +48,6 @@ export default function EditProfileDetail() {
       try {
         const { data } = await api.get("/student");
 
-        console.log("Raw profile response:", data);
-
         const profile = data?.student;
 
         if (!profile) {
@@ -67,9 +65,8 @@ export default function EditProfileDetail() {
           address: profile.address || "",
           phone: profile.phone || "",
         });
-      } catch (error) {
-        console.error("Failed to load profile", error);
-        toast.error("Failed to load profile details.");
+      } catch (error:any) {
+        toast.error("Failed to load profile details.",error);
       } finally {
         setLoading(false);
       }
@@ -122,14 +119,13 @@ export default function EditProfileDetail() {
                 "/student/update/profiledetail",
                 payload
               );
-              console.log(data);
+            
               if (data.success) {
                 toast.success(data.message);
                 formikHelpers?.resetForm({ values: data.user });
               }
             } catch (error: any) {
-              console.error("Error updating profile:", error);
-              toast.error("Update failed. Try again.");
+              toast.error("Update failed. Try again.",error);
             }
           }}
         >

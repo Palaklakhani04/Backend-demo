@@ -3,7 +3,7 @@ import { prisma } from "../config/dbConnection";
 
 export const createUserLeave = async (id: string) => {
     const academicYear = new Date().getFullYear()
-    const userLeave = await prisma.userLeave.create({
+     await prisma.userLeave.create({
         data:{
             userId: id,
             totalLeave: 12,
@@ -21,7 +21,7 @@ export const updateUserLeaveData = async (availableLeave: number, usedLeave: num
         const usedLeaveData = usedLeave + 1
         const availableLeaveData = availableLeave - 1
         const attendancePercentageData = (((totalWorkingDays-usedLeaveData)/totalWorkingDays) * 100).toFixed(2)
-        const userLeave = await prisma.userLeave.update({
+        await prisma.userLeave.update({
         where:{
             id: id
         },
@@ -36,7 +36,7 @@ export const updateUserLeaveData = async (availableLeave: number, usedLeave: num
         const usedLeaveData = usedLeave + leaveDay
         const availableLeaveData = availableLeave - leaveDay
         const attendancePercentageData = (((totalWorkingDays-usedLeaveData)/totalWorkingDays) * 100).toFixed(2)
-        const userLeave = await prisma.userLeave.update({
+        await prisma.userLeave.update({
         where:{
             id: id
         },
@@ -50,44 +50,3 @@ export const updateUserLeaveData = async (availableLeave: number, usedLeave: num
     }
 }
 
-// export const getUserLeaveData = async () => {
-
-//         const student = await prisma.user.findMany({
-//            where: {
-//              roleId: 4
-//            },
-//            include: {
-//              leaveRequest:true
-//            }
-//         })
-
-//         const faculty = await prisma.user.findMany({
-//             where: {
-//                 roleId: 3
-//             },
-//             include: {
-//              leaveRequest:true
-//            }
-//         })
-
-//         const hod = await prisma.user.findMany({
-//             include:{
-//                 leaveRequest: {
-//                     select: {
-//                         userId : true
-//                     }
-//                 }
-//             }
-//         })
-        
-
-//         console.log(hod)
-//         const leaveDataOfUser = {
-//             HodLeaveCount: hod.length ,
-//             FacultyLeaveCount: faculty.length,
-//             StudentLeaveCount: student.length
-//         }
-
-//         return leaveDataOfUser
-        
-// }

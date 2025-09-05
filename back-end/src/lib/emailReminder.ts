@@ -53,7 +53,6 @@ export const getPendingRequest = async () => {
 export const sendMail = async () => {
     const user = await getPendingRequest();
 
-    console.log(user)
 
     user.forEach(async (element) => {
         await sendReminderEmail(element.name, element.email)
